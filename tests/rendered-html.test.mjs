@@ -19,13 +19,11 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(layout, /og\.png/);
   assert.match(invitation, /오랜 시간 걸음 지키며/);
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
-  assert.match(invitation, /참석 의사 전달하기/);
-  assert.match(invitation, /축하 메시지/);
-  assert.match(invitation, /\/api\/guestbook/);
+  assert.doesNotMatch(invitation, /RSVP|참석 의사|방명록|guestbook|\/api\//i);
   assert.match(css, /max-width:\s*480px/);
   assert.match(css, /#d8e592/i);
   assert.match(css, /prefers-reduced-motion/);
-  assert.equal(JSON.parse(hosting).d1, "DB");
+  assert.equal(JSON.parse(hosting).d1, null);
   assert.match(JSON.parse(hosting).project_id, /^appgprj_/);
   assert.doesNotMatch(page + layout, /codex-preview|SkeletonPreview/);
 });

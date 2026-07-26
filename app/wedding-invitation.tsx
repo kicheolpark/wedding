@@ -1,10 +1,8 @@
 "use client";
 
 import {
-  FormEvent,
   KeyboardEvent,
   MouseEvent,
-  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -14,7 +12,6 @@ import {
 const WEDDING_DATE = new Date("2026-09-20T12:00:00+09:00");
 const WEDDING_DATE_LABEL = "2026년 9월 20일 일요일 낮 12시";
 const VENUE_ADDRESS = "식장 주소를 입력해 주세요";
-const ACCENT = "#d8e592";
 
 const contactGroups = [
   {
@@ -80,34 +77,6 @@ const accounts = [
     ],
   },
 ];
-
-const sampleGuestbook = [
-  {
-    id: -1,
-    author: "두 사람의 친구",
-    content: "오래오래 지금처럼 서로를 아껴주며 행복하게 살아요!",
-    colorIndex: 0,
-  },
-  {
-    id: -2,
-    author: "축하하는 마음",
-    content: "두 분의 빛나는 시작을 진심으로 축하합니다.",
-    colorIndex: 2,
-  },
-  {
-    id: -3,
-    author: "소중한 인연",
-    content: "함께 걷는 모든 날에 웃음과 사랑이 가득하기를 바라요.",
-    colorIndex: 4,
-  },
-];
-
-type GuestbookMessage = {
-  id: number;
-  author: string;
-  content: string;
-  colorIndex: number;
-};
 
 type Countdown = {
   days: number;
@@ -206,7 +175,7 @@ function Modal({
         <div className="modal-dots dots-two" aria-hidden="true" />
         <header className="sheet-header">
           <div>
-            <small>CONTACT · RSVP</small>
+            <small>CONTACT</small>
             <h2 id={`modal-${title}`}>{title}</h2>
           </div>
           <button
@@ -289,20 +258,10 @@ function Calendar() {
 
 export function WeddingInvitation() {
   const [contactOpen, setContactOpen] = useState(false);
-  const [rsvpOpen, setRsvpOpen] = useState(false);
   const [countdown, setCountdown] = useState<Countdown>(getCountdown());
   const [expandedAccount, setExpandedAccount] = useState<string | null>(null);
   const [copyState, setCopyState] = useState("");
   const [notice, setNotice] = useState("");
-  const [guestbook, setGuestbook] =
-    useState<GuestbookMessage[]>(sampleGuestbook);
-  const [guestbookPending, setGuestbookPending] = useState(false);
-  const [rsvpPending, setRsvpPending] = useState(false);
-  const [rsvpSide, setRsvpSide] = useState("신랑측");
-  const [rsvpAttendance, setRsvpAttendance] = useState("참석");
-  const [mealPreference, setMealPreference] = useState("예정");
-  const [hideToday, setHideToday] = useState(false);
-  const [guestbookStatus, setGuestbookStatus] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
 
   const dDay = useMemo(
@@ -310,27 +269,9 @@ export function WeddingInvitation() {
     [countdown.days],
   );
 
-  const closeRsvp = useCallback(() => {
-    if (hideToday) {
-      localStorage.setItem(
-        "wedding-rsvp-hide-date",
-        new Date().toISOString().slice(0, 10),
-      );
-    }
-    setRsvpOpen(false);
-  }, [hideToday]);
-
   useEffect(() => {
     const timer = window.setInterval(() => setCountdown(getCountdown()), 1000);
     return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10);
-    const hiddenDate = localStorage.getItem("wedding-rsvp-hide-date");
-    if (hiddenDate === today) return;
-    const timer = window.setTimeout(() => setRsvpOpen(true), 2000);
-    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -347,27 +288,6 @@ export function WeddingInvitation() {
     return () => observer.disconnect();
   }, []);
 
-  const refreshGuestbook = useCallback(async () => {
-    try {
-      const response = await fetch("/api/guestbook", { cache: "no-store" });
-      if (!response.ok) return;
-      const data = (await response.json()) as {
-        messages?: GuestbookMessage[];
-      };
-      if (data.messages?.length) {
-        setGuestbook([...data.messages, ...sampleGuestbook]);
-      }
-    } catch {
-      // Keep the invitation fully usable if the database is not attached yet.
-    }
-  }, []);
-
-  useEffect(() => {
-    void refreshGuestbook();
-    const poll = window.setInterval(refreshGuestbook, 4000);
-    return () => window.clearInterval(poll);
-  }, [refreshGuestbook]);
-
   const copyText = async (text: string, key: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -379,90 +299,6 @@ export function WeddingInvitation() {
       }, 1800);
     } catch {
       setNotice("길게 눌러 복사해 주세요");
-    }
-  };
-
-  const handleRsvp = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    const name = String(form.get("name") ?? "").trim();
-    const phone = String(form.get("phone") ?? "").trim();
-    const guestCount = Number(form.get("guestCount") ?? 0);
-    if (!name || !phone || guestCount < 1) {
-      setNotice("성함, 연락처, 참석 인원을 확인해 주세요");
-      return;
-    }
-
-    setRsvpPending(true);
-    try {
-      const response = await fetch("/api/rsvp", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          name,
-          phone,
-          attendance: rsvpAttendance,
-          guestCount,
-          mealPreference,
-          message: JSON.stringify({
-            side: rsvpSide,
-            companion: String(form.get("companion") ?? "").trim(),
-            note: String(form.get("message") ?? "").trim(),
-          }),
-        }),
-      });
-      if (!response.ok) throw new Error("RSVP unavailable");
-      setNotice("참석 의사가 정성껏 전달되었습니다");
-      event.currentTarget.reset();
-      window.setTimeout(() => {
-        setNotice("");
-        closeRsvp();
-      }, 1200);
-    } catch {
-      setNotice("지금은 전달할 수 없습니다. 잠시 후 다시 시도해 주세요");
-    } finally {
-      setRsvpPending(false);
-    }
-  };
-
-  const handleGuestbook = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formElement = event.currentTarget;
-    const form = new FormData(formElement);
-    const author = String(form.get("author") ?? "").trim();
-    const content = String(form.get("content") ?? "").trim();
-    if (!author || !content) {
-      setGuestbookStatus("이름과 축하 메시지를 모두 적어 주세요");
-      return;
-    }
-
-    setGuestbookPending(true);
-    const optimistic: GuestbookMessage = {
-      id: -Date.now(),
-      author,
-      content,
-      colorIndex: Math.floor(Math.random() * 6),
-    };
-    setGuestbook((current) => [optimistic, ...current]);
-
-    try {
-      const response = await fetch("/api/guestbook", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(optimistic),
-      });
-      if (!response.ok) throw new Error("Guestbook unavailable");
-      formElement.reset();
-      setGuestbookStatus("따뜻한 마음이 방명록에 남겨졌어요");
-      await refreshGuestbook();
-    } catch {
-      setGuestbook((current) =>
-        current.filter((message) => message.id !== optimistic.id),
-      );
-      setGuestbookStatus("저장하지 못했습니다. 잠시 후 다시 남겨 주세요");
-    } finally {
-      setGuestbookPending(false);
-      window.setTimeout(() => setGuestbookStatus(""), 2500);
     }
   };
 
@@ -766,67 +602,6 @@ export function WeddingInvitation() {
         </div>
       </section>
 
-      <section className="rsvp-banner fade-up">
-        <small>RSVP</small>
-        <h2>참석 여부를 알려주세요</h2>
-        <p>
-          더 정성껏 자리를 준비할 수 있도록
-          <br />
-          참석 의사를 전해주시면 감사하겠습니다.
-        </p>
-        <button type="button" onClick={() => setRsvpOpen(true)}>
-          참석 의사 전달하기 <span>→</span>
-        </button>
-      </section>
-
-      <section className="section guestbook-section">
-        <SectionHeading
-          eyebrow="GUESTBOOK"
-          title="축하 메시지"
-          intro="두 사람의 새로운 시작에 따뜻한 마음을 남겨주세요."
-        />
-        <form className="guestbook-form fade-up" onSubmit={handleGuestbook}>
-          <label>
-            <span>이름</span>
-            <input
-              name="author"
-              maxLength={20}
-              placeholder="성함을 입력해 주세요"
-              autoComplete="name"
-            />
-          </label>
-          <label>
-            <span>메시지</span>
-            <textarea
-              name="content"
-              maxLength={180}
-              placeholder="축하의 마음을 남겨 주세요"
-              rows={4}
-            />
-          </label>
-          <button type="submit" disabled={guestbookPending}>
-            {guestbookPending ? "마음을 전하는 중…" : "메시지 남기기"}{" "}
-            <span>✦</span>
-          </button>
-          <p className="form-status" aria-live="polite">
-            {guestbookStatus}
-          </p>
-        </form>
-
-        <div className="postit-board fade-up" aria-live="polite">
-          {guestbook.map((message, index) => (
-            <article
-              className={`postit color-${message.colorIndex % 6} rotate-${index % 5}`}
-              key={`${message.id}-${index}`}
-            >
-              <span>✦</span>
-              <p>{message.content}</p>
-              <small>— {message.author}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <footer>
         <div className="footer-mark" aria-hidden="true">
           K <span>✦</span> S
@@ -882,131 +657,6 @@ export function WeddingInvitation() {
             </div>
           ))}
         </div>
-      </Modal>
-
-      <Modal
-        title="참석 의사 전달"
-        open={rsvpOpen}
-        onClose={closeRsvp}
-        className="rsvp-sheet"
-      >
-        <p className="sheet-intro">
-          한 분 한 분을 소중히 모실 수 있도록 알려주세요.
-        </p>
-        <form className="rsvp-form" onSubmit={handleRsvp}>
-          <fieldset>
-            <legend>구분</legend>
-            <div className="toggle-row">
-              {["신랑측", "신부측"].map((side) => (
-                <button
-                  type="button"
-                  className={rsvpSide === side ? "selected" : ""}
-                  onClick={() => setRsvpSide(side)}
-                  aria-pressed={rsvpSide === side}
-                  key={side}
-                >
-                  {side}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-          <label>
-            <span>성함</span>
-            <input
-              name="name"
-              required
-              maxLength={30}
-              placeholder="성함을 입력해 주세요"
-              autoComplete="name"
-            />
-          </label>
-          <label>
-            <span>연락처</span>
-            <input
-              name="phone"
-              required
-              inputMode="tel"
-              maxLength={20}
-              placeholder="010-0000-0000"
-              autoComplete="tel"
-            />
-          </label>
-          <fieldset>
-            <legend>참석 여부</legend>
-            <div className="radio-row">
-              {["참석", "불참석"].map((option) => (
-                <label key={option}>
-                  <input
-                    type="radio"
-                    name="attendance"
-                    value={option}
-                    checked={rsvpAttendance === option}
-                    onChange={() => setRsvpAttendance(option)}
-                  />
-                  <span>{option}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <label>
-            <span>참석 인원</span>
-            <input
-              name="guestCount"
-              required
-              min={1}
-              max={20}
-              defaultValue={1}
-              type="number"
-              inputMode="numeric"
-              placeholder="본인 포함 총 참석인원"
-            />
-          </label>
-          <label>
-            <span>동행인</span>
-            <input
-              name="companion"
-              maxLength={100}
-              placeholder="함께 오시는 분 성함"
-            />
-          </label>
-          <fieldset>
-            <legend>식사 여부</legend>
-            <div className="radio-row three">
-              {["예정", "안함", "미정"].map((option) => (
-                <label key={option}>
-                  <input
-                    type="radio"
-                    name="meal"
-                    value={option}
-                    checked={mealPreference === option}
-                    onChange={() => setMealPreference(option)}
-                  />
-                  <span>{option}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <label>
-            <span>전달사항 <small>선택</small></span>
-            <textarea
-              name="message"
-              rows={3}
-              maxLength={300}
-              placeholder="전하고 싶은 말씀을 남겨 주세요"
-            />
-          </label>
-          <button className="rsvp-submit" type="submit" disabled={rsvpPending}>
-            {rsvpPending ? "전달하는 중…" : "참석 의사 전달하기"}
-          </button>
-          <label className="hide-today">
-            <input
-              type="checkbox"
-              checked={hideToday}
-              onChange={(event) => setHideToday(event.target.checked)}
-            />
-            <span>오늘 하루 보지 않기</span>
-          </label>
-        </form>
       </Modal>
 
       {notice ? (
