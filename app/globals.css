@@ -87,7 +87,7 @@ a {
       rgba(35, 37, 26, 0.42) 70%,
       rgba(35, 37, 26, 0.92) 100%
     ),
-    url("/hero.jpg") center / cover no-repeat,
+    var(--hero-image) center / cover no-repeat,
     linear-gradient(145deg, #656a50, #343729);
 }
 

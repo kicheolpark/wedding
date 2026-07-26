@@ -4,7 +4,6 @@ import {
   KeyboardEvent,
   MouseEvent,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,6 +11,12 @@ import {
 const WEDDING_DATE = new Date("2026-09-20T12:00:00+09:00");
 const WEDDING_DATE_LABEL = "2026년 9월 20일 일요일 낮 12시";
 const VENUE_ADDRESS = "식장 주소를 입력해 주세요";
+const ASSET_BASE = import.meta.env.BASE_URL ?? "/";
+
+function assetPath(filename: string) {
+  const base = ASSET_BASE.endsWith("/") ? ASSET_BASE : `${ASSET_BASE}/`;
+  return `${base}${filename}`;
+}
 
 const contactGroups = [
   {
@@ -33,26 +38,26 @@ const contactGroups = [
 ];
 
 const galleryImages = [
-  { src: "/갤러리 1.jpg", label: "gallery 01" },
-  { src: "/갤러리 2.jpg", label: "gallery 02" },
-  { src: "/갤러리 3.jpg", label: "gallery 03" },
+  { src: assetPath("갤러리 1.jpg"), label: "gallery 01" },
+  { src: assetPath("갤러리 2.jpg"), label: "gallery 02" },
+  { src: assetPath("갤러리 3.jpg"), label: "gallery 03" },
 ];
 
 const venueCards = [
   {
-    src: "/안내1.jpg",
+    src: assetPath("안내1.jpg"),
     eyebrow: "안내 01",
     title: "예식장 안내",
     body: "안내1 내용을 입력해 주세요.",
   },
   {
-    src: "/안내2.jpg",
+    src: assetPath("안내2.jpg"),
     eyebrow: "안내 02",
     title: "피로연 안내",
     body: "안내2 내용을 입력해 주세요.",
   },
   {
-    src: "/안내3.jpg",
+    src: assetPath("안내3.jpg"),
     eyebrow: "안내 03",
     title: "기타 안내",
     body: "안내3 내용을 입력해 주세요.",
@@ -264,10 +269,9 @@ export function WeddingInvitation() {
   const [notice, setNotice] = useState("");
   const galleryRef = useRef<HTMLDivElement>(null);
 
-  const dDay = useMemo(
-    () => Math.max(0, Math.ceil((WEDDING_DATE.getTime() - Date.now()) / 86_400_000)),
-    [countdown.days],
-  );
+  const dDay =
+    countdown.days +
+    (countdown.hours + countdown.minutes + countdown.seconds > 0 ? 1 : 0);
 
   useEffect(() => {
     const timer = window.setInterval(() => setCountdown(getCountdown()), 1000);
@@ -335,7 +339,15 @@ export function WeddingInvitation() {
   return (
     <main className="invitation-shell">
       <section className="hero" id="top">
-        <div className="hero-photo" aria-label="신랑 신부 대표 사진">
+        <div
+          className="hero-photo"
+          aria-label="신랑 신부 대표 사진"
+          style={
+            {
+              "--hero-image": `url("${assetPath("hero.jpg")}")`,
+            } as React.CSSProperties
+          }
+        >
           <div className="hero-fallback">
             <span>OUR WEDDING DAY</span>
             <h1>

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -26,4 +26,19 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.equal(JSON.parse(hosting).d1, null);
   assert.match(JSON.parse(hosting).project_id, /^appgprj_/);
   assert.doesNotMatch(page + layout, /codex-preview|SkeletonPreview/);
+});
+
+test("builds a GitHub Pages site under the wedding project path", async () => {
+  const [html, files] = await Promise.all([
+    readFile(new URL("docs/index.html", root), "utf8"),
+    readdir(new URL("docs/assets/", root)),
+    access(new URL("docs/.nojekyll", root)),
+  ]);
+
+  assert.match(html, /<html[^>]*lang="ko"/i);
+  assert.match(html, /박기철 · 정송이, 결혼합니다/);
+  assert.match(html, /\/wedding\/assets\//);
+  assert.match(html, /\/wedding\/og\.png/);
+  assert.ok(files.some((file) => file.endsWith(".js")));
+  assert.ok(files.some((file) => file.endsWith(".css")));
 });
