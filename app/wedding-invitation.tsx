@@ -354,7 +354,6 @@ export function WeddingInvitation() {
               기철 <i>&amp;</i> 송이
             </h1>
             <p>2026 · 09 · 20 · SUN</p>
-            <small>hero.jpg를 추가해 주세요</small>
           </div>
         </div>
         <a className="scroll-indicator" href="#invitation" aria-label="초대글로 이동">

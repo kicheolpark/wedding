@@ -54,6 +54,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/hero.jpg"
+          fetchPriority="high"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

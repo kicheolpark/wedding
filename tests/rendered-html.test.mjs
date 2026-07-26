@@ -26,6 +26,7 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.equal(JSON.parse(hosting).d1, null);
   assert.match(JSON.parse(hosting).project_id, /^appgprj_/);
   assert.doesNotMatch(page + layout, /codex-preview|SkeletonPreview/);
+  assert.doesNotMatch(invitation, /hero\.jpg를 추가해 주세요/);
 });
 
 test("builds a GitHub Pages site under the wedding project path", async () => {
@@ -33,12 +34,14 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
     readFile(new URL("docs/index.html", root), "utf8"),
     readdir(new URL("docs/assets/", root)),
     access(new URL("docs/.nojekyll", root)),
+    access(new URL("docs/hero.jpg", root)),
   ]);
 
   assert.match(html, /<html[^>]*lang="ko"/i);
   assert.match(html, /박기철 · 정송이, 결혼합니다/);
   assert.match(html, /\/wedding\/assets\//);
   assert.match(html, /\/wedding\/og\.png/);
+  assert.match(html, /\/wedding\/hero\.jpg/);
   assert.ok(files.some((file) => file.endsWith(".js")));
   assert.ok(files.some((file) => file.endsWith(".css")));
 });
