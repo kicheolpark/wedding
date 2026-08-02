@@ -64,9 +64,13 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /className="protected-image"/);
   assert.match(invitation, /onContextMenu=\{\(event\) => event\.preventDefault\(\)\}/);
   assert.match(invitation, /function isInsideKakaoMap/);
+  assert.match(invitation, /function areAllTouchesInsideKakaoMap/);
+  assert.match(invitation, /document\.elementFromPoint/);
   assert.match(invitation, /gesturestart/);
   assert.match(invitation, /event\.touches\.length > 1/);
-  assert.match(invitation, /preventDoubleTapZoom/);
+  assert.match(invitation, /handleTouchEnd/);
+  assert.match(invitation, /activeTouchPointers/);
+  assert.match(invitation, /pointermove/);
   assert.match(invitation, /preventWheelZoom/);
   assert.match(invitation, /preventKeyboardZoom/);
   assert.doesNotMatch(invitation, /<iframe src=\{KAKAO_MAP_URL\}/);
@@ -77,7 +81,11 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.calendar-grid \.wedding-date-cell[^}]*color:\s*#fff\s*!important/);
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /\.kakao-map-canvas/);
-  assert.match(css, /\.kakao-map-canvas[^}]*touch-action:\s*auto/);
+  assert.match(css, /\.kakao-map-canvas[^}]*touch-action:\s*none/);
+  assert.match(css, /html[^}]*touch-action:\s*pan-y/);
+  assert.match(css, /body[^}]*touch-action:\s*pan-y/);
+  assert.match(css, /\.page-shell[^}]*touch-action:\s*pan-y/);
+  assert.match(css, /-webkit-text-size-adjust:\s*100%/);
   assert.match(css, /\.page-shell > :not\(\.location\)[^{]*\{[^}]*touch-action:\s*pan-y/);
   assert.match(css, /\.location > :not\(\.map-frame\)[^{]*\{[^}]*touch-action:\s*pan-y/);
   assert.match(css, /\.kakao-map-state/);

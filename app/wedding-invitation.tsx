@@ -79,6 +79,23 @@ function isInsideKakaoMap(target: EventTarget | null) {
   return target instanceof Element && target.closest(".kakao-map-canvas") !== null;
 }
 
+function areAllTouchesInsideKakaoMap(touches: TouchList) {
+  const mapCanvas = document.querySelector<HTMLElement>(".kakao-map-canvas");
+  if (!mapCanvas || touches.length === 0) return false;
+
+  const bounds = mapCanvas.getBoundingClientRect();
+  return Array.from(touches).every((touch) => {
+    const pointTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    const isWithinBounds =
+      touch.clientX >= bounds.left &&
+      touch.clientX <= bounds.right &&
+      touch.clientY >= bounds.top &&
+      touch.clientY <= bounds.bottom;
+
+    return isWithinBounds && isInsideKakaoMap(touch.target) && isInsideKakaoMap(pointTarget);
+  });
+}
+
 const galleryFileNames = [
   "1.jpg",
   "2.jpg",
@@ -566,17 +583,30 @@ function Footer() {
 export function WeddingInvitation() {
   useEffect(() => {
     const listenerOptions: AddEventListenerOptions = { capture: true, passive: false };
+    const activeTouchPointers = new Map<number, boolean>();
+    let mapTouchGestureActive = false;
     let lastTouchEnd = 0;
     let lastTouchX = 0;
     let lastTouchY = 0;
 
     const preventGestureZoom = (event: Event) => {
-      if (!isInsideKakaoMap(event.target)) event.preventDefault();
+      if (!mapTouchGestureActive && !isInsideKakaoMap(event.target)) event.preventDefault();
     };
-    const preventMultiTouchZoom = (event: TouchEvent) => {
-      if (event.touches.length > 1 && !isInsideKakaoMap(event.target)) event.preventDefault();
+    const handleMultiTouchZoom = (event: TouchEvent) => {
+      const eventScale = (event as TouchEvent & { scale?: number }).scale;
+      const isZoomGesture = event.touches.length > 1 || (typeof eventScale === "number" && eventScale !== 1);
+      if (!isZoomGesture) return;
+
+      mapTouchGestureActive = areAllTouchesInsideKakaoMap(event.touches);
+      lastTouchEnd = 0;
+      if (!mapTouchGestureActive) event.preventDefault();
     };
-    const preventDoubleTapZoom = (event: TouchEvent) => {
+    const handleTouchEnd = (event: TouchEvent) => {
+      mapTouchGestureActive = event.touches.length > 1 && areAllTouchesInsideKakaoMap(event.touches);
+      if (event.touches.length !== 0 || event.changedTouches.length !== 1) {
+        lastTouchEnd = 0;
+        return;
+      }
       if (isInsideKakaoMap(event.target)) {
         lastTouchEnd = 0;
         return;
@@ -590,6 +620,33 @@ export function WeddingInvitation() {
       lastTouchEnd = now;
       lastTouchX = touch.clientX;
       lastTouchY = touch.clientY;
+    };
+    const handleTouchCancel = () => {
+      mapTouchGestureActive = false;
+      lastTouchEnd = 0;
+    };
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.pointerType === "touch") {
+        activeTouchPointers.set(event.pointerId, isInsideKakaoMap(event.target));
+      }
+    };
+    const handlePointerMove = (event: PointerEvent) => {
+      if (event.pointerType === "touch" && activeTouchPointers.has(event.pointerId)) {
+        activeTouchPointers.set(
+          event.pointerId,
+          isInsideKakaoMap(event.target) && isInsideKakaoMap(document.elementFromPoint(event.clientX, event.clientY)),
+        );
+      }
+      if (
+        event.pointerType === "touch" &&
+        activeTouchPointers.size > 1 &&
+        !Array.from(activeTouchPointers.values()).every(Boolean)
+      ) {
+        event.preventDefault();
+      }
+    };
+    const handlePointerEnd = (event: PointerEvent) => {
+      activeTouchPointers.delete(event.pointerId);
     };
     const preventWheelZoom = (event: WheelEvent) => {
       if ((event.ctrlKey || event.metaKey) && !isInsideKakaoMap(event.target)) event.preventDefault();
@@ -607,9 +664,14 @@ export function WeddingInvitation() {
     ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
       document.addEventListener(eventName, preventGestureZoom, listenerOptions);
     });
-    document.addEventListener("touchstart", preventMultiTouchZoom, listenerOptions);
-    document.addEventListener("touchmove", preventMultiTouchZoom, listenerOptions);
-    document.addEventListener("touchend", preventDoubleTapZoom, listenerOptions);
+    document.addEventListener("touchstart", handleMultiTouchZoom, listenerOptions);
+    document.addEventListener("touchmove", handleMultiTouchZoom, listenerOptions);
+    document.addEventListener("touchend", handleTouchEnd, listenerOptions);
+    document.addEventListener("touchcancel", handleTouchCancel, listenerOptions);
+    document.addEventListener("pointerdown", handlePointerDown, listenerOptions);
+    document.addEventListener("pointermove", handlePointerMove, listenerOptions);
+    document.addEventListener("pointerup", handlePointerEnd, listenerOptions);
+    document.addEventListener("pointercancel", handlePointerEnd, listenerOptions);
     document.addEventListener("dblclick", preventGestureZoom, listenerOptions);
     window.addEventListener("wheel", preventWheelZoom, listenerOptions);
     window.addEventListener("keydown", preventKeyboardZoom, listenerOptions);
@@ -618,9 +680,14 @@ export function WeddingInvitation() {
       ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
         document.removeEventListener(eventName, preventGestureZoom, true);
       });
-      document.removeEventListener("touchstart", preventMultiTouchZoom, true);
-      document.removeEventListener("touchmove", preventMultiTouchZoom, true);
-      document.removeEventListener("touchend", preventDoubleTapZoom, true);
+      document.removeEventListener("touchstart", handleMultiTouchZoom, true);
+      document.removeEventListener("touchmove", handleMultiTouchZoom, true);
+      document.removeEventListener("touchend", handleTouchEnd, true);
+      document.removeEventListener("touchcancel", handleTouchCancel, true);
+      document.removeEventListener("pointerdown", handlePointerDown, true);
+      document.removeEventListener("pointermove", handlePointerMove, true);
+      document.removeEventListener("pointerup", handlePointerEnd, true);
+      document.removeEventListener("pointercancel", handlePointerEnd, true);
       document.removeEventListener("dblclick", preventGestureZoom, true);
       window.removeEventListener("wheel", preventWheelZoom, true);
       window.removeEventListener("keydown", preventKeyboardZoom, true);
