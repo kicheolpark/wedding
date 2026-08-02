@@ -12,20 +12,29 @@ function assetPath(filename: string) {
   return `${base}${filename}`;
 }
 
-const galleryImages = [
-  {
-    alt: "박기철 정송이 웨딩 갤러리 1",
-    sources: [assetPath("갤러리 1.jpg"), assetPath("갤러리 1.jpeg"), assetPath("갤러리 1.png"), assetPath("gallery-1.jpg")],
-  },
-  {
-    alt: "박기철 정송이 웨딩 갤러리 2",
-    sources: [assetPath("갤러리 2.jpg"), assetPath("갤러리 2.jpeg"), assetPath("갤러리 2.png"), assetPath("gallery-2.jpg")],
-  },
-  {
-    alt: "박기철 정송이 웨딩 갤러리 3",
-    sources: [assetPath("갤러리 3.jpg"), assetPath("갤러리 3.jpeg"), assetPath("갤러리 3.png"), assetPath("gallery-3.jpg")],
-  },
+const galleryFileNames = [
+  "1.jpg",
+  "2.jpg",
+  "3.jpg",
+  "4.jpg",
+  "5.jpg",
+  "6.jpg",
+  "8.jpg",
+  "9.jpg",
+  "10.jpg",
+  "13.jpg",
+  "14.jpg",
+  "15.jpg",
+  "16.jpg",
+  "17.JPG",
+  "18.JPG",
+  "19.JPG",
 ];
+
+const galleryImages = galleryFileNames.map((filename, index) => ({
+  alt: `박기철 정송이 웨딩 갤러리 ${index + 1}`,
+  sources: [assetPath(`gallery/${filename}`)],
+}));
 
 const accounts = {
   groom: [
@@ -74,11 +83,13 @@ function FlexibleImage({
   alt,
   className,
   label,
+  loading = "lazy",
 }: {
   sources: string[];
   alt: string;
   className?: string;
   label: string;
+  loading?: "eager" | "lazy";
 }) {
   const [sourceIndex, setSourceIndex] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -98,6 +109,7 @@ function FlexibleImage({
       alt={alt}
       className={className}
       draggable={false}
+      loading={loading}
       onError={() => {
         if (sourceIndex < sources.length - 1) {
           setSourceIndex((current) => current + 1);
@@ -187,6 +199,7 @@ function Hero() {
         alt="박기철 정송이 결혼식 대표 사진"
         className="hero-image"
         label="hero.jpg"
+        loading="eager"
       />
       <div className="hero-shade" />
       <div className="hero-copy">
@@ -257,6 +270,15 @@ function WeddingVideo() {
 function Gallery() {
   const [selected, setSelected] = useState(0);
   const startX = useRef<number | null>(null);
+  const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  useEffect(() => {
+    thumbnailRefs.current[selected]?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [selected]);
 
   const move = (direction: number) => {
     setSelected((current) => (current + direction + galleryImages.length) % galleryImages.length);
@@ -281,8 +303,11 @@ function Gallery() {
           alt={galleryImages[selected].alt}
           className="gallery-main"
           label={`갤러리 ${selected + 1}`}
+          loading="eager"
         />
-        <span className="gallery-count">{String(selected + 1).padStart(2, "0")} / 03</span>
+        <span className="gallery-count">
+          {String(selected + 1).padStart(2, "0")} / {String(galleryImages.length).padStart(2, "0")}
+        </span>
       </div>
       <div className="gallery-rail">
         <button type="button" onClick={() => move(-1)} aria-label="이전 이미지">〈</button>
@@ -293,6 +318,7 @@ function Gallery() {
               type="button"
               className={selected === index ? "active" : ""}
               onClick={() => setSelected(index)}
+              ref={(element) => { thumbnailRefs.current[index] = element; }}
               aria-label={`갤러리 ${index + 1} 보기`}
               aria-pressed={selected === index}
             >

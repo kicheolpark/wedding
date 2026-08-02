@@ -30,9 +30,10 @@ test("contains the complete Korean mobile wedding invitation", async () => {
 });
 
 test("builds a GitHub Pages site under the wedding project path", async () => {
-  const [html, files] = await Promise.all([
+  const [html, files, galleryFiles] = await Promise.all([
     readFile(new URL("docs/index.html", root), "utf8"),
     readdir(new URL("docs/assets/", root)),
+    readdir(new URL("docs/gallery/", root)),
     access(new URL("docs/.nojekyll", root)),
     access(new URL("docs/hero.jpg", root)),
   ]);
@@ -44,4 +45,5 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
   assert.match(html, /\/wedding\/hero\.jpg/);
   assert.ok(files.some((file) => file.endsWith(".js")));
   assert.ok(files.some((file) => file.endsWith(".css")));
+  assert.equal(galleryFiles.filter((file) => /\.jpe?g$/i.test(file)).length, 16);
 });
