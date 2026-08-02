@@ -134,8 +134,8 @@ function Hero() {
       <div className="hero-copy">
         <p className="hero-kicker">WE ARE GETTING MARRIED</p>
         <h1><span>박기철</span><em>&amp;</em><span>정송이</span></h1>
-        <p>2026. 09. 20. 일요일 · 낮 12시</p>
-        <p>부산 아바니 호텔 · 5F 아바니홀</p>
+        <p>2026년 9월 20일 일요일 낮 12시</p>
+        <p>부산 아바니 호텔, 5층 아바니홀</p>
       </div>
       <a className="scroll-indicator" href="#invitation" aria-label="초대글로 스크롤">
         <span>SCROLL</span>
@@ -177,7 +177,7 @@ function WeddingVideo() {
       <div className="video-frame">
         {playing ? (
           <iframe
-            src="https://www.youtube-nocookie.com/embed/lthzmlNP_JY?autoplay=1&playsinline=1&rel=0"
+            src="https://www.youtube-nocookie.com/embed/_9KvnBxxWls?autoplay=1&playsinline=1&rel=0"
             title="박기철 정송이 웨딩 영상"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -185,7 +185,7 @@ function WeddingVideo() {
         ) : (
           <button type="button" className="video-cover" onClick={() => setPlaying(true)} aria-label="웨딩 영상 재생">
             <img
-              src="https://img.youtube.com/vi/lthzmlNP_JY/maxresdefault.jpg"
+              src="https://img.youtube.com/vi/_9KvnBxxWls/maxresdefault.jpg"
               alt="웨딩 영상 미리보기"
             />
             <span aria-hidden="true">▶</span>
@@ -282,23 +282,30 @@ function WeddingDay() {
   return (
     <section className="section wedding-day fade-up">
       <SectionTitle title="WEDDING DAY" />
-      <p className="wedding-date">2026년 9월 20일 일요일 오후 12시</p>
+      <p className="wedding-date">2026년 9월 20일 일요일 낮 12시</p>
       <div className="calendar" aria-label="2026년 9월 달력, 20일 결혼식">
-        <div className="calendar-top"><span>September</span><strong>09</strong></div>
+        <div className="calendar-top"><strong>09</strong></div>
         <div className="weekdays">
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, index) => <span key={`${day}-${index}`}>{day}</span>)}
+          {['일', '월', '화', '수', '목', '금', '토'].map((day) => <span key={day}>{day}</span>)}
         </div>
         <div className="calendar-grid">
-          {cells.map((day, index) => (
-            <span key={`${day ?? 'empty'}-${index}`} className={day === 20 ? "wedding-date-cell" : ""}>
-              {day}
-            </span>
-          ))}
+          {cells.map((day, index) => {
+            const className = [
+              day === 20 ? "wedding-date-cell" : "",
+              day !== null && [24, 25, 26].includes(day) ? "holiday" : "",
+            ].filter(Boolean).join(" ");
+
+            return (
+              <span key={`${day ?? 'empty'}-${index}`} className={className}>
+                {day}
+                {day === 25 && <small>추석</small>}
+              </span>
+            );
+          })}
         </div>
       </div>
       <p className="d-day-copy">
-        박기철 <i>&amp;</i> 정송이의 결혼식이<br />
-        {countdown?.finished ? <strong>오늘입니다</strong> : <><strong>{dayCount ?? "—"}일</strong> 남았습니다</>}
+        결혼식이 {countdown?.finished ? <strong>오늘입니다</strong> : <><strong>{dayCount ?? "—"}일</strong> 남았습니다.</>}
       </p>
       <div className="countdown" aria-label="결혼식까지 남은 시간">
         {[
@@ -342,18 +349,12 @@ function Location() {
         <a href={KAKAO_MAP_URL} target="_blank" rel="noreferrer"><b>K</b>카카오맵</a>
         <a href="https://www.tmap.co.kr/tmap2/mobile/route.jsp?name=%EC%95%84%EB%B0%94%EB%8B%88%20%EC%84%BC%ED%8A%B8%EB%9F%B4%20%EB%B6%80%EC%82%B0&lon=129.065277&lat=35.148750" target="_blank" rel="noreferrer"><b>T</b>티맵</a>
       </div>
-    </section>
-  );
-}
-
-function Information() {
-  return (
-    <section className="section information fade-up">
-      <SectionTitle title="INFORMATION" />
-      <div className="information-card">
+      <div className="meal-information">
         <span aria-hidden="true">🍽</span>
-        <h3>식사 안내</h3>
-        <p>4층 더큐브에서 뷔페로 준비되어 있습니다.<br />식권은 5층 축의대에서 수령해주세요.</p>
+        <div>
+          <h3>식사 안내</h3>
+          <p>4층 더큐브에서 뷔페로 준비되어 있습니다.<br />식권은 5층 축의대에서 수령해주세요.</p>
+        </div>
       </div>
     </section>
   );
@@ -423,7 +424,7 @@ function Footer() {
   const kakaoShare = async () => {
     const shareData = {
       title: "박기철 ♥ 정송이 결혼식에 초대합니다",
-      text: "2026년 9월 20일 오후 12시, 아바니 센트럴 부산",
+      text: "2026년 9월 20일 낮 12시, 부산 아바니 호텔 5층 아바니홀",
       url: window.location.href,
     };
     if (navigator.share) {
@@ -470,7 +471,6 @@ export function WeddingInvitation() {
       <Gallery />
       <WeddingDay />
       <Location />
-      <Information />
       <Accounts />
       <Footer />
     </main>

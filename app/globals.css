@@ -134,19 +134,18 @@ a { color: inherit; text-decoration: none; }
 .wedding-day { background: #f7f4ee; }
 .wedding-date { margin: -25px 0 38px; color: #77756f; font-family: var(--serif); font-size: 14px; }
 .calendar { max-width: 340px; margin: 0 auto; padding: 26px 17px 25px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.calendar-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 23px; font-family: Georgia, serif; }
-.calendar-top span { color: #716e67; font-size: 15px; font-style: italic; }
+.calendar-top { display: flex; align-items: center; justify-content: center; margin-bottom: 23px; font-family: Georgia, serif; }
 .calendar-top strong { color: #bbb5ab; font-size: 34px; font-weight: 400; }
 .weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.weekdays { margin-bottom: 13px; color: #a19e97; font-family: Georgia, serif; font-size: 10px; }
+.weekdays { margin-bottom: 13px; color: #a19e97; font-family: var(--serif); font-size: 10px; }
 .weekdays span:first-child { color: var(--accent); }
 .calendar-grid { row-gap: 8px; }
-.calendar-grid span { display: grid; height: 29px; place-items: center; color: #605e59; font-family: Georgia, serif; font-size: 12px; }
+.calendar-grid span { position: relative; display: grid; height: 35px; place-items: center; color: #605e59; font-family: Georgia, serif; font-size: 12px; }
 .calendar-grid span:nth-child(7n + 1) { color: var(--accent); }
-.calendar-grid .wedding-date-cell { position: relative; z-index: 1; color: #fff; font-weight: 600; }
-.calendar-grid .wedding-date-cell::before { content: ""; position: absolute; z-index: -1; width: 29px; height: 29px; border-radius: 50%; background: var(--accent); box-shadow: 0 5px 12px rgba(157,111,102,.25); }
+.calendar-grid .holiday { color: var(--accent); }
+.calendar-grid .wedding-date-cell { width: 29px; height: 29px; margin: 3px auto; border-radius: 50%; background: var(--accent); color: #fff !important; font-weight: 600; box-shadow: 0 5px 12px rgba(157,111,102,.25); }
+.calendar-grid span small { position: absolute; top: 23px; color: var(--accent); font-family: var(--sans); font-size: 7px; line-height: 1; white-space: nowrap; }
 .d-day-copy { margin: 43px 0 27px; color: #74716b; font-family: var(--serif); font-size: 14px; line-height: 1.8; }
-.d-day-copy i { color: var(--accent); font-style: normal; }
 .d-day-copy strong { color: var(--accent); font-size: 18px; font-weight: 500; }
 .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
 .countdown div { padding: 14px 2px 12px; border: 1px solid #e4ded4; background: rgba(255,255,255,.7); }
@@ -170,30 +169,28 @@ a { color: inherit; text-decoration: none; }
 .map-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 30px; }
 .map-links a { display: flex; min-height: 55px; align-items: center; justify-content: center; gap: 5px; border: 1px solid #ded9d0; background: #fff; color: #5b5a56; font-size: 10px; }
 .map-links b { display: grid; width: 19px; height: 19px; place-items: center; border-radius: 5px; background: #ece8e1; color: #5f6d50; font-family: Arial, sans-serif; font-size: 10px; }
-
-.information { background: #f2eee7; }
-.information-card { padding: 34px 18px; border: 1px solid rgba(157,111,102,.2); background: rgba(255,255,255,.55); }
-.information-card > span { display: block; margin-bottom: 13px; filter: grayscale(1); font-size: 21px; opacity: .65; }
-.information-card h3 { margin: 0 0 17px; font-family: var(--serif); font-size: 17px; }
-.information-card p { margin: 0; color: #6d6b66; font-family: var(--serif); font-size: 13px; line-height: 2; }
+.meal-information { display: grid; grid-template-columns: 32px 1fr; gap: 13px; margin-top: 30px; padding: 25px 18px; border: 1px solid rgba(157,111,102,.2); background: rgba(255,255,255,.55); text-align: left; }
+.meal-information > span { padding-top: 1px; filter: grayscale(1); font-size: 21px; opacity: .65; }
+.meal-information h3 { margin: 0 0 11px; font-family: var(--serif); font-size: 17px; }
+.meal-information p { margin: 0; color: #6d6b66; font-family: var(--serif); font-size: 13px; line-height: 2; }
 
 .accounts { position: relative; }
-.account-intro { margin: -22px 0 38px; color: #94918b; font-family: var(--serif); font-size: 12px; line-height: 1.9; }
+.account-intro { margin: -22px 0 38px; color: #6d6b66; font-family: var(--serif); font-size: 15px; line-height: 2.15; }
 .account-group { margin-bottom: 12px; border: 1px solid var(--line); text-align: left; }
 .account-toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 17px 18px; border: 0; background: #f4f1eb; color: #52514d; cursor: pointer; }
-.account-toggle span:first-child { font-family: var(--serif); font-size: 14px; font-weight: 600; }
-.account-toggle span:last-child { color: #aaa69e; font-size: 9px; }
+.account-toggle span:first-child { font-family: var(--serif); font-size: 15px; font-weight: 600; }
+.account-toggle span:last-child { color: #aaa69e; font-size: 11px; }
 .account-list { padding: 0 17px; background: #fff; }
 .account-row { position: relative; padding: 20px 58px 20px 0; }
 .account-row + .account-row { border-top: 1px solid var(--line); }
 .account-row p { margin: 0; }
 .account-row p:first-child { margin-bottom: 8px; }
-.account-row small { margin-right: 8px; color: #a09d97; font-size: 9px; }
-.account-row strong { font-size: 13px; }
-.account-row p:nth-child(2) { color: #74716c; font-size: 11px; }
+.account-row small { margin-right: 8px; color: #a09d97; font-size: 11px; }
+.account-row strong { font-size: 15px; }
+.account-row p:nth-child(2) { color: #74716c; font-size: 14px; }
 .account-row p:nth-child(2) span { margin-right: 7px; }
 .account-row p:nth-child(2) b { font-weight: 500; }
-.account-row > button { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 8px 10px; border: 1px solid #dcd6cd; border-radius: 2px; background: white; color: #77736c; font-size: 9px; cursor: pointer; }
+.account-row > button { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 8px 10px; border: 1px solid #dcd6cd; border-radius: 2px; background: white; color: #77736c; font-size: 11px; cursor: pointer; }
 
 footer { position: relative; padding: 70px 28px 40px; background: #3f3f3b; color: rgba(255,255,255,.78); text-align: center; }
 .footer-script { margin: 0 0 10px; color: #fff; font-family: Georgia, serif; font-size: 22px; font-style: italic; }
