@@ -6,8 +6,9 @@ const WEDDING_DATE = new Date("2026-09-20T12:00:00+09:00");
 const ASSET_BASE = import.meta.env.BASE_URL ?? "/";
 const KAKAO_MAP_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_MAP_JAVASCRIPT_KEY?.trim() ?? "";
 const VENUE_COORDINATES = { latitude: 35.14875, longitude: 129.065277 };
-const KAKAO_MAP_URL =
-  "https://map.kakao.com/link/map/%EC%95%84%EB%B0%94%EB%8B%88%20%EC%84%BC%ED%8A%B8%EB%9F%B4%20%EB%B6%80%EC%82%B0,35.148750,129.065277";
+const NAVER_MAP_URL = "https://naver.me/GRDxjnLj";
+const KAKAO_MAP_URL = "https://kko.to/5B-1ybgWQa";
+const TMAP_URL = "https://tmap.life/2df2cfe9";
 
 type KakaoMapInstance = {
   addControl: (control: object, position: unknown) => void;
@@ -161,9 +162,10 @@ function FlexibleImage({
     <img
       src={sources[sourceIndex]}
       alt={alt}
-      className={className}
+      className={["protected-image", className].filter(Boolean).join(" ")}
       draggable={false}
       loading={loading}
+      onContextMenu={(event) => event.preventDefault()}
       onError={() => {
         if (sourceIndex < sources.length - 1) {
           setSourceIndex((current) => current + 1);
@@ -245,6 +247,9 @@ function WeddingVideo() {
             <img
               src="https://img.youtube.com/vi/reczF8eMLtQ/maxresdefault.jpg"
               alt="웨딩 영상 미리보기"
+              className="protected-image"
+              draggable={false}
+              onContextMenu={(event) => event.preventDefault()}
             />
             <span aria-hidden="true">▶</span>
           </button>
@@ -451,9 +456,9 @@ function Location() {
         <div><span>버스</span><p>24, 138-1, 583 문전교차로 하차</p></div>
       </div>
       <div className="map-links">
-        <a href="https://map.naver.com/p/search/%EC%95%84%EB%B0%94%EB%8B%88%20%EC%84%BC%ED%8A%B8%EB%9F%B4%20%EB%B6%80%EC%82%B0" target="_blank" rel="noreferrer"><b>N</b>네이버 지도</a>
+        <a href={NAVER_MAP_URL} target="_blank" rel="noreferrer"><b>N</b>네이버 지도</a>
         <a href={KAKAO_MAP_URL} target="_blank" rel="noreferrer"><b>K</b>카카오맵</a>
-        <a href="https://www.tmap.co.kr/tmap2/mobile/route.jsp?name=%EC%95%84%EB%B0%94%EB%8B%88%20%EC%84%BC%ED%8A%B8%EB%9F%B4%20%EB%B6%80%EC%82%B0&lon=129.065277&lat=35.148750" target="_blank" rel="noreferrer"><b>T</b>티맵</a>
+        <a href={TMAP_URL} target="_blank" rel="noreferrer"><b>T</b>티맵</a>
       </div>
       <div className="meal-information">
         <span aria-hidden="true">🍽</span>
@@ -530,7 +535,6 @@ function Footer() {
   const kakaoShare = async () => {
     const shareData = {
       title: "박기철 & 정송이 결혼식에 초대합니다",
-      text: "2026년 9월 20일 낮 12시, 부산 아바니 호텔 5층 아바니홀",
       url: window.location.href,
     };
     if (navigator.share) {
