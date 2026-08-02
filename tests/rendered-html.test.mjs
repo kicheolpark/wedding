@@ -24,8 +24,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
   assert.match(invitation, /2026년 9월 20일 일요일 낮 12시/);
   assert.match(invitation, /부산 아바니 호텔, 5층 아바니홀/);
-  assert.match(invitation, /2LTmgyRS47E/);
-  assert.doesNotMatch(invitation, /_9KvnBxxWls/);
+  assert.match(invitation, /reczF8eMLtQ/);
+  assert.doesNotMatch(invitation, /2LTmgyRS47E|_9KvnBxxWls/);
   assert.match(invitation, /\['일', '월', '화', '수', '목', '금', '토'\]/);
   assert.match(invitation, /\[24, 25, 26\]/);
   assert.match(invitation, /추석/);
