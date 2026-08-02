@@ -17,11 +17,11 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(layout, /박기철 · 정송이, 결혼합니다/);
   assert.match(layout, /lang="ko"/);
   assert.match(layout, /og\.png/);
-  assert.match(invitation, /오랜 시간 걸음 지키며/);
+  assert.match(invitation, /만남에 사랑이 스며들어/);
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
   assert.doesNotMatch(invitation, /RSVP|참석 의사|방명록|guestbook|\/api\//i);
-  assert.match(css, /max-width:\s*480px/);
-  assert.match(css, /#d8e592/i);
+  assert.match(css, /width:\s*min\(100%,\s*480px\)/);
+  assert.match(css, /#9d6f66/i);
   assert.match(css, /prefers-reduced-motion/);
   assert.equal(JSON.parse(hosting).d1, null);
   assert.match(JSON.parse(hosting).project_id, /^appgprj_/);
