@@ -5,13 +5,14 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 
 test("contains the complete Korean mobile wedding invitation", async () => {
-  const [page, layout, invitation, css, hosting, envExample, viteConfig] = await Promise.all([
+  const [page, layout, invitation, css, hosting, envExample, productionEnv, viteConfig] = await Promise.all([
     readFile(new URL("app/page.tsx", root), "utf8"),
     readFile(new URL("app/layout.tsx", root), "utf8"),
     readFile(new URL("app/wedding-invitation.tsx", root), "utf8"),
     readFile(new URL("app/globals.css", root), "utf8"),
     readFile(new URL(".openai/hosting.json", root), "utf8"),
     readFile(new URL(".env.example", root), "utf8"),
+    readFile(new URL(".env.production", root), "utf8"),
     readFile(new URL("vite.pages.config.ts", root), "utf8"),
   ]);
 
@@ -63,6 +64,7 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.kakao-map-state/);
   assert.doesNotMatch(css, /\.naver-map-/);
   assert.match(envExample, /VITE_KAKAO_MAP_JAVASCRIPT_KEY=your_kakao_map_javascript_key/);
+  assert.match(productionEnv, /^VITE_KAKAO_MAP_JAVASCRIPT_KEY=.+$/m);
   assert.match(viteConfig, /envDir:/);
   assert.equal(JSON.parse(hosting).d1, null);
   assert.match(JSON.parse(hosting).project_id, /^appgprj_/);
