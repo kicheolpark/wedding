@@ -38,10 +38,10 @@ const galleryImages = galleryFileNames.map((filename, index) => ({
 
 const accounts = {
   groom: [
-    { role: "신랑", name: "박기철", bank: "은행명", number: "<계좌 정보>" },
+    { role: "신랑", name: "박기철", bank: "경남은행", number: "0000-1212" },
   ],
   bride: [
-    { role: "신부", name: "정송이", bank: "은행명", number: "<계좌 정보>" },
+    { role: "신부", name: "정송이", bank: "경남은행", number: "0000-0329" },
   ],
 };
 
@@ -73,7 +73,6 @@ function SectionTitle({ eyebrow, title }: { eyebrow?: string; title: string }) {
     <div className="section-heading">
       {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <h2>{title}</h2>
-      <span className="heading-mark" aria-hidden="true">✦</span>
     </div>
   );
 }
@@ -121,76 +120,6 @@ function FlexibleImage({
   );
 }
 
-function MusicPlayer() {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isReady, setIsReady] = useState(true);
-  const [showNotice, setShowNotice] = useState(true);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setShowNotice(false), 3200);
-    const audio = audioRef.current;
-    if (audio) {
-      audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
-    }
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  const toggleMusic = async () => {
-    const audio = audioRef.current;
-    if (!audio || !isReady) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-      return;
-    }
-
-    try {
-      await audio.play();
-      setIsPlaying(true);
-    } catch {
-      setShowNotice(true);
-    }
-  };
-
-  return (
-    <>
-      {showNotice && (
-        <div className="music-notice" role="status">
-          배경음악이 준비되어 있습니다
-        </div>
-      )}
-      <audio
-        ref={audioRef}
-        src={assetPath("bgm.mp3")}
-        loop
-        preload="metadata"
-        onError={() => {
-          setIsReady(false);
-          setIsPlaying(false);
-        }}
-      />
-      <button
-        className={`music-button ${isPlaying ? "playing" : ""}`}
-        type="button"
-        onClick={toggleMusic}
-        aria-label={isReady ? (isPlaying ? "배경음악 일시정지" : "배경음악 재생") : "배경음악 파일이 필요합니다"}
-        title={isReady ? (isPlaying ? "음악 일시정지" : "음악 재생") : "public/bgm.mp3 파일을 추가해 주세요"}
-      >
-        {isPlaying ? (
-          <>
-            <span className="equalizer" aria-hidden="true"><i /><i /><i /></span>
-            <span className="pause-icon" aria-hidden="true">Ⅱ</span>
-          </>
-        ) : (
-          <span className="play-icon" aria-hidden="true">▶</span>
-        )}
-      </button>
-    </>
-  );
-}
-
 function Hero() {
   return (
     <section className="hero" aria-label="박기철 정송이 모바일 청첩장 표지">
@@ -205,8 +134,8 @@ function Hero() {
       <div className="hero-copy">
         <p className="hero-kicker">WE ARE GETTING MARRIED</p>
         <h1><span>박기철</span><em>&amp;</em><span>정송이</span></h1>
-        <p>2026. 09. 20. SUN · 12:00 PM</p>
-        <p>아바니 센트럴 부산 · 5F 아바니홀</p>
+        <p>2026. 09. 20. 일요일 · 낮 12시</p>
+        <p>부산 아바니 호텔 · 5F 아바니홀</p>
       </div>
       <a className="scroll-indicator" href="#invitation" aria-label="초대글로 스크롤">
         <span>SCROLL</span>
@@ -531,7 +460,6 @@ export function WeddingInvitation() {
 
   return (
     <main className="page-shell">
-      <MusicPlayer />
       <Hero />
       <Invitation />
       <WeddingVideo />

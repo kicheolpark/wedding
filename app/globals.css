@@ -60,57 +60,8 @@ a { color: inherit; text-decoration: none; }
   font-weight: 400;
   letter-spacing: .18em;
 }
-.heading-mark {
-  display: block;
-  margin-top: 13px;
-  color: var(--accent);
-  font-size: 9px;
-}
-
 .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .85s ease, transform .85s ease; }
 .fade-up.visible { opacity: 1; transform: none; }
-
-.music-notice {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 50%;
-  width: min(100%, 480px);
-  padding: 13px 16px;
-  transform: translateX(-50%);
-  background: rgba(30, 30, 29, .72);
-  color: white;
-  font-size: 12px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  animation: notice-in .45s ease both;
-}
-
-.music-button {
-  position: absolute;
-  z-index: 20;
-  top: 20px;
-  right: 18px;
-  display: flex;
-  min-width: 35px;
-  height: 34px;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .72);
-  color: #3f403c;
-  box-shadow: 0 5px 16px rgba(0, 0, 0, .08);
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-}
-.play-icon { margin-left: 2px; font-size: 11px; }
-.pause-icon { font-size: 12px; font-weight: 700; letter-spacing: -2px; }
-.equalizer { display: flex; height: 14px; align-items: end; gap: 2px; }
-.equalizer i { width: 2px; height: 9px; background: var(--accent); animation: equalize .72s ease-in-out infinite alternate; }
-.equalizer i:nth-child(2) { height: 13px; animation-delay: -.3s; }
-.equalizer i:nth-child(3) { height: 6px; animation-delay: -.5s; }
 
 .hero {
   position: relative;
@@ -256,8 +207,6 @@ footer > small { color: rgba(255,255,255,.32); font-size: 8px; letter-spacing: .
 .copy-toast { position: fixed; z-index: 100; left: 50%; bottom: 28px; width: max-content; max-width: calc(100% - 40px); transform: translateX(-50%); padding: 12px 17px; border-radius: 3px; background: rgba(34,34,32,.9); color: #fff; font-size: 11px; box-shadow: 0 8px 24px rgba(0,0,0,.16); }
 
 @keyframes bounce { 0%, 100% { transform: translateY(0); opacity: .45; } 50% { transform: translateY(10px); opacity: 1; } }
-@keyframes equalize { to { height: 3px; } }
-@keyframes notice-in { from { opacity: 0; transform: translate(-50%,-100%); } to { opacity: 1; transform: translate(-50%,0); } }
 
 @media (min-width: 700px) {
   body { padding: 20px 0; }
