@@ -66,9 +66,9 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /\.kakao-map-canvas/);
   assert.match(css, /\.kakao-map-state/);
-  assert.match(css, /\.calendar-grid span small[^}]*top:\s*21px/);
+  assert.match(css, /\.calendar-grid span small[^}]*top:\s*27px/);
   assert.match(css, /\.calendar-grid span small[^}]*font-size:\s*8px/);
-  assert.match(css, /\.accounts[^}]*background:\s*var\(--paper\)/);
+  assert.match(css, /\.accounts[^}]*background:\s*#f7f4ee/);
   assert.doesNotMatch(css, /\.naver-map-/);
   assert.match(envExample, /VITE_KAKAO_MAP_JAVASCRIPT_KEY=your_kakao_map_javascript_key/);
   assert.match(productionEnv, /^VITE_KAKAO_MAP_JAVASCRIPT_KEY=.+$/m);
