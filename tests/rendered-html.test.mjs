@@ -27,8 +27,9 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /부산 아바니 호텔, 5층 아바니홀/);
   assert.match(invitation, /reczF8eMLtQ/);
   assert.doesNotMatch(invitation, /2LTmgyRS47E|_9KvnBxxWls/);
-  assert.match(invitation, /SectionTitle eyebrow="WEDDING FILM" title="OUR STORY"/);
-  assert.doesNotMatch(invitation, /SectionTitle eyebrow="OUR STORY" title="WEDDING FILM"/);
+  assert.match(invitation, /className="section-heading video-heading"/);
+  assert.match(invitation, /<h2>WEDDING FILM<\/h2>/);
+  assert.match(invitation, /<p className="eyebrow">OUR STORY<\/p>/);
   assert.match(invitation, /\['일', '월', '화', '수', '목', '금', '토'\]/);
   assert.match(invitation, /\[24, 25, 26\]/);
   assert.match(invitation, /추석/);

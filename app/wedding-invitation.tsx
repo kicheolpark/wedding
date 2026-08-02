@@ -228,7 +228,10 @@ function WeddingVideo() {
 
   return (
     <section className="video-section fade-up" aria-label="웨딩 영상">
-      <SectionTitle eyebrow="WEDDING FILM" title="OUR STORY" />
+      <div className="section-heading video-heading">
+        <h2>WEDDING FILM</h2>
+        <p className="eyebrow">OUR STORY</p>
+      </div>
       <div className="video-frame">
         {playing ? (
           <iframe
