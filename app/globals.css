@@ -144,7 +144,7 @@ a { color: inherit; text-decoration: none; }
 .calendar-grid span:nth-child(7n + 1) { color: var(--accent); }
 .calendar-grid .holiday { color: var(--accent); }
 .calendar-grid .wedding-date-cell { width: 29px; height: 29px; margin: 3px auto; border-radius: 50%; background: var(--accent); color: #fff !important; font-weight: 600; box-shadow: 0 5px 12px rgba(157,111,102,.25); }
-.calendar-grid span small { position: absolute; top: 23px; color: var(--accent); font-family: var(--sans); font-size: 7px; line-height: 1; white-space: nowrap; }
+.calendar-grid span small { position: absolute; top: 21px; color: var(--accent); font-family: var(--sans); font-size: 8px; line-height: 1; white-space: nowrap; }
 .d-day-copy { margin: 43px 0 27px; color: #74716b; font-family: var(--serif); font-size: 14px; line-height: 1.8; }
 .d-day-copy strong { color: var(--accent); font-size: 18px; font-weight: 500; }
 .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
@@ -178,7 +178,7 @@ a { color: inherit; text-decoration: none; }
 .meal-information h3 { margin: 0 0 11px; font-family: var(--serif); font-size: 17px; }
 .meal-information p { margin: 0; color: #6d6b66; font-family: var(--serif); font-size: 13px; line-height: 2; }
 
-.accounts { position: relative; }
+.accounts { position: relative; background: var(--paper); }
 .account-intro { margin: -22px 0 38px; color: #6d6b66; font-family: var(--serif); font-size: 15px; line-height: 2.15; }
 .account-group { margin-bottom: 12px; border: 1px solid var(--line); text-align: left; }
 .account-toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 17px 18px; border: 0; background: #f4f1eb; color: #52514d; cursor: pointer; }
@@ -196,15 +196,11 @@ a { color: inherit; text-decoration: none; }
 .account-row p:nth-child(2) b { font-weight: 500; }
 .account-row > button { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 8px 10px; border: 1px solid #dcd6cd; border-radius: 2px; background: white; color: #77736c; font-size: 11px; cursor: pointer; }
 
-footer { position: relative; padding: 70px 28px 40px; background: #3f3f3b; color: rgba(255,255,255,.78); text-align: center; }
-.footer-script { margin: 0 0 10px; color: #fff; font-family: Georgia, serif; font-size: 22px; font-style: italic; }
-.footer-script i { color: #d9bdb7; font-weight: 400; }
-footer > p:nth-child(2) { margin: 0; font-family: var(--serif); font-size: 12px; }
-.share-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 34px 0 40px; }
+footer { position: relative; padding: 40px 28px; background: #3f3f3b; color: rgba(255,255,255,.78); text-align: center; }
+.share-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0; }
 .share-buttons button { height: 49px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; font-size: 11px; cursor: pointer; }
 .share-buttons .kakao-share { border-color: #fee500; background: #fee500; color: #302f2a; }
 .share-buttons span { margin-right: 5px; }
-footer > small { color: rgba(255,255,255,.32); font-size: 8px; letter-spacing: .08em; }
 .copy-toast { position: fixed; z-index: 100; left: 50%; bottom: 28px; width: max-content; max-width: calc(100% - 40px); transform: translateX(-50%); padding: 12px 17px; border-radius: 3px; background: rgba(34,34,32,.9); color: #fff; font-size: 11px; box-shadow: 0 8px 24px rgba(0,0,0,.16); }
 
 @keyframes bounce { 0%, 100% { transform: translateY(0); opacity: .45; } 50% { transform: translateY(10px); opacity: 1; } }

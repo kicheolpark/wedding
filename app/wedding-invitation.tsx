@@ -228,7 +228,7 @@ function WeddingVideo() {
 
   return (
     <section className="video-section fade-up" aria-label="웨딩 영상">
-      <SectionTitle eyebrow="OUR STORY" title="WEDDING FILM" />
+      <SectionTitle eyebrow="WEDDING FILM" title="OUR STORY" />
       <div className="video-frame">
         {playing ? (
           <iframe
@@ -543,13 +543,10 @@ function Footer() {
 
   return (
     <footer>
-      <p className="footer-script">Ki Cheol <i>&amp;</i> Song I</p>
-      <p>소중한 날, 함께해 주세요.</p>
       <div className="share-buttons">
         <button type="button" className="kakao-share" onClick={kakaoShare}><span>●</span> 카카오톡 공유</button>
         <button type="button" onClick={copyLink}><span>↗</span> 링크 복사</button>
       </div>
-      <small>© 2026 Kicheol &amp; Songi. All rights reserved.</small>
       {toast && <div className="copy-toast" role="status">{toast}</div>}
     </footer>
   );
