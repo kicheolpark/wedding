@@ -232,7 +232,7 @@ function WeddingVideo() {
       <div className="video-frame">
         {playing ? (
           <iframe
-            src="https://www.youtube-nocookie.com/embed/_9KvnBxxWls?autoplay=1&playsinline=1&rel=0"
+            src="https://www.youtube-nocookie.com/embed/2LTmgyRS47E?autoplay=1&playsinline=1&rel=0"
             title="박기철 정송이 웨딩 영상"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -240,7 +240,7 @@ function WeddingVideo() {
         ) : (
           <button type="button" className="video-cover" onClick={() => setPlaying(true)} aria-label="웨딩 영상 재생">
             <img
-              src="https://img.youtube.com/vi/_9KvnBxxWls/maxresdefault.jpg"
+              src="https://img.youtube.com/vi/2LTmgyRS47E/maxresdefault.jpg"
               alt="웨딩 영상 미리보기"
             />
             <span aria-hidden="true">▶</span>
