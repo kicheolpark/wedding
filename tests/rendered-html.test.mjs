@@ -63,6 +63,12 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.doesNotMatch(invitation, /text:\s*"2026년 9월 20일 낮 12시, 부산 아바니 호텔 5층 아바니홀"/);
   assert.match(invitation, /className="protected-image"/);
   assert.match(invitation, /onContextMenu=\{\(event\) => event\.preventDefault\(\)\}/);
+  assert.match(invitation, /function isInsideKakaoMap/);
+  assert.match(invitation, /gesturestart/);
+  assert.match(invitation, /event\.touches\.length > 1/);
+  assert.match(invitation, /preventDoubleTapZoom/);
+  assert.match(invitation, /preventWheelZoom/);
+  assert.match(invitation, /preventKeyboardZoom/);
   assert.doesNotMatch(invitation, /<iframe src=\{KAKAO_MAP_URL\}/);
   assert.match(css, /width:\s*min\(100%,\s*480px\)/);
   assert.match(css, /#9d6f66/i);
@@ -72,6 +78,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /\.kakao-map-canvas/);
   assert.match(css, /\.kakao-map-canvas[^}]*touch-action:\s*auto/);
+  assert.match(css, /\.page-shell > :not\(\.location\)[^{]*\{[^}]*touch-action:\s*pan-y/);
+  assert.match(css, /\.location > :not\(\.map-frame\)[^{]*\{[^}]*touch-action:\s*pan-y/);
   assert.match(css, /\.kakao-map-state/);
   assert.match(css, /\.protected-image[^}]*-webkit-touch-callout:\s*none/);
   assert.match(css, /\.protected-image[^}]*pointer-events:\s*none/);

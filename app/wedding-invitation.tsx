@@ -75,6 +75,10 @@ function assetPath(filename: string) {
   return `${base}${filename}`;
 }
 
+function isInsideKakaoMap(target: EventTarget | null) {
+  return target instanceof Element && target.closest(".kakao-map-canvas") !== null;
+}
+
 const galleryFileNames = [
   "1.jpg",
   "2.jpg",
@@ -560,6 +564,69 @@ function Footer() {
 }
 
 export function WeddingInvitation() {
+  useEffect(() => {
+    const listenerOptions: AddEventListenerOptions = { capture: true, passive: false };
+    let lastTouchEnd = 0;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+
+    const preventGestureZoom = (event: Event) => {
+      if (!isInsideKakaoMap(event.target)) event.preventDefault();
+    };
+    const preventMultiTouchZoom = (event: TouchEvent) => {
+      if (event.touches.length > 1 && !isInsideKakaoMap(event.target)) event.preventDefault();
+    };
+    const preventDoubleTapZoom = (event: TouchEvent) => {
+      if (isInsideKakaoMap(event.target)) {
+        lastTouchEnd = 0;
+        return;
+      }
+
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      const now = Date.now();
+      const isNearPreviousTouch = Math.hypot(touch.clientX - lastTouchX, touch.clientY - lastTouchY) < 40;
+      if (now - lastTouchEnd < 350 && isNearPreviousTouch) event.preventDefault();
+      lastTouchEnd = now;
+      lastTouchX = touch.clientX;
+      lastTouchY = touch.clientY;
+    };
+    const preventWheelZoom = (event: WheelEvent) => {
+      if ((event.ctrlKey || event.metaKey) && !isInsideKakaoMap(event.target)) event.preventDefault();
+    };
+    const preventKeyboardZoom = (event: KeyboardEvent) => {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        ["+", "-", "=", "0"].includes(event.key) &&
+        !isInsideKakaoMap(event.target)
+      ) {
+        event.preventDefault();
+      }
+    };
+
+    ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+      document.addEventListener(eventName, preventGestureZoom, listenerOptions);
+    });
+    document.addEventListener("touchstart", preventMultiTouchZoom, listenerOptions);
+    document.addEventListener("touchmove", preventMultiTouchZoom, listenerOptions);
+    document.addEventListener("touchend", preventDoubleTapZoom, listenerOptions);
+    document.addEventListener("dblclick", preventGestureZoom, listenerOptions);
+    window.addEventListener("wheel", preventWheelZoom, listenerOptions);
+    window.addEventListener("keydown", preventKeyboardZoom, listenerOptions);
+
+    return () => {
+      ["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+        document.removeEventListener(eventName, preventGestureZoom, true);
+      });
+      document.removeEventListener("touchstart", preventMultiTouchZoom, true);
+      document.removeEventListener("touchmove", preventMultiTouchZoom, true);
+      document.removeEventListener("touchend", preventDoubleTapZoom, true);
+      document.removeEventListener("dblclick", preventGestureZoom, true);
+      window.removeEventListener("wheel", preventWheelZoom, true);
+      window.removeEventListener("keydown", preventKeyboardZoom, true);
+    };
+  }, []);
+
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(".fade-up");
     const observer = new IntersectionObserver(

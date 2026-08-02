@@ -40,6 +40,9 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 0 60px rgba(61, 54, 46, 0.11);
 }
 
+.page-shell > :not(.location),
+.location > :not(.map-frame) { touch-action: pan-y; }
+
 .section {
   padding: 108px 34px;
   text-align: center;
