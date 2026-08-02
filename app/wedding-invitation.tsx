@@ -4,8 +4,70 @@ import { useEffect, useRef, useState } from "react";
 
 const WEDDING_DATE = new Date("2026-09-20T12:00:00+09:00");
 const ASSET_BASE = import.meta.env.BASE_URL ?? "/";
+const KAKAO_MAP_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_MAP_JAVASCRIPT_KEY?.trim() ?? "";
+const VENUE_COORDINATES = { latitude: 35.14875, longitude: 129.065277 };
 const KAKAO_MAP_URL =
   "https://map.kakao.com/link/map/%EC%95%84%EB%B0%94%EB%8B%88%20%EC%84%BC%ED%8A%B8%EB%9F%B4%20%EB%B6%80%EC%82%B0,35.148750,129.065277";
+
+type KakaoMapInstance = {
+  addControl: (control: object, position: unknown) => void;
+};
+type KakaoMarkerInstance = { setMap: (map: KakaoMapInstance | null) => void };
+type KakaoInfoWindowInstance = {
+  open: (map: KakaoMapInstance, marker: KakaoMarkerInstance) => void;
+  close: () => void;
+};
+type KakaoMapsNamespace = {
+  load: (callback: () => void) => void;
+  LatLng: new (latitude: number, longitude: number) => object;
+  Map: new (element: HTMLElement, options: Record<string, unknown>) => KakaoMapInstance;
+  Marker: new (options: Record<string, unknown>) => KakaoMarkerInstance;
+  InfoWindow: new (options: { content: string }) => KakaoInfoWindowInstance;
+  ZoomControl: new () => object;
+  ControlPosition: { RIGHT: unknown };
+};
+
+declare global {
+  interface Window {
+    kakao?: { maps: KakaoMapsNamespace };
+  }
+}
+
+let kakaoMapsLoader: Promise<KakaoMapsNamespace> | null = null;
+
+function loadKakaoMaps(javascriptKey: string) {
+  if (window.kakao?.maps?.Map) return Promise.resolve(window.kakao.maps);
+  if (kakaoMapsLoader) return kakaoMapsLoader;
+
+  kakaoMapsLoader = new Promise<KakaoMapsNamespace>((resolve, reject) => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.dataset.kakaoMapSdk = "true";
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(javascriptKey)}&autoload=false`;
+    script.onload = () => {
+      const maps = window.kakao?.maps;
+      if (!maps) {
+        kakaoMapsLoader = null;
+        reject(new Error("카카오 지도 API를 초기화하지 못했습니다."));
+        return;
+      }
+      maps.load(() => {
+        if (window.kakao?.maps?.Map) resolve(window.kakao.maps);
+        else {
+          kakaoMapsLoader = null;
+          reject(new Error("카카오 지도 API를 초기화하지 못했습니다."));
+        }
+      });
+    };
+    script.onerror = () => {
+      kakaoMapsLoader = null;
+      reject(new Error("카카오 지도 API를 불러오지 못했습니다."));
+    };
+    document.head.appendChild(script);
+  });
+
+  return kakaoMapsLoader;
+}
 
 function assetPath(filename: string) {
   const base = ASSET_BASE.endsWith("/") ? ASSET_BASE : `${ASSET_BASE}/`;
@@ -317,6 +379,61 @@ function WeddingDay() {
   );
 }
 
+function KakaoMap() {
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const [status, setStatus] = useState<"missing" | "loading" | "ready" | "error">(
+    KAKAO_MAP_JAVASCRIPT_KEY ? "loading" : "missing",
+  );
+
+  useEffect(() => {
+    if (!KAKAO_MAP_JAVASCRIPT_KEY) return;
+
+    let active = true;
+    let marker: KakaoMarkerInstance | undefined;
+    let infoWindow: KakaoInfoWindowInstance | undefined;
+
+    loadKakaoMaps(KAKAO_MAP_JAVASCRIPT_KEY)
+      .then((maps) => {
+        if (!active || !mapRef.current) return;
+
+        const center = new maps.LatLng(VENUE_COORDINATES.latitude, VENUE_COORDINATES.longitude);
+        const map = new maps.Map(mapRef.current, {
+          center,
+          level: 3,
+        });
+        map.addControl(new maps.ZoomControl(), maps.ControlPosition.RIGHT);
+        marker = new maps.Marker({ position: center, map, title: "아바니 센트럴 부산" });
+        infoWindow = new maps.InfoWindow({
+          content: '<div class="kakao-map-info"><strong>아바니 센트럴 부산</strong><span>5층 아바니홀</span></div>',
+        });
+        infoWindow.open(map, marker);
+        setStatus("ready");
+      })
+      .catch(() => active && setStatus("error"));
+
+    return () => {
+      active = false;
+      infoWindow?.close();
+      marker?.setMap(null);
+    };
+  }, []);
+
+  return (
+    <div className="map-frame" aria-label="아바니 센트럴 부산 카카오 지도">
+      <div className="kakao-map-canvas" ref={mapRef} />
+      {status !== "ready" && (
+        <div className={`kakao-map-state ${status === "error" ? "error" : ""}`}>
+          <b aria-hidden="true">K</b>
+          <strong>
+            {status === "missing" ? "카카오 지도 API 설정이 필요합니다" : status === "error" ? "지도를 불러오지 못했습니다" : "지도를 불러오는 중입니다"}
+          </strong>
+          <span>아바니 센트럴 부산 · 5층 아바니홀</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Location() {
   return (
     <section className="section location fade-up">
@@ -324,14 +441,7 @@ function Location() {
       <h3>아바니 센트럴 부산</h3>
       <p className="hall">5층 아바니홀</p>
       <p className="address">부산 남구 전포대로 133</p>
-      <div className="map-frame">
-        <iframe src={KAKAO_MAP_URL} title="아바니 센트럴 부산 카카오맵" loading="lazy" />
-        <a href={KAKAO_MAP_URL} target="_blank" rel="noreferrer" aria-label="카카오맵에서 크게 보기">
-          <span className="map-pin" aria-hidden="true">♥</span>
-          <strong>아바니 센트럴 부산</strong>
-          <small>카카오맵에서 크게 보기 ↗</small>
-        </a>
-      </div>
+      <KakaoMap />
       <div className="transport-list">
         <div><span>주차</span><p>호텔 주차장 입구 왼쪽 진입 B2~B4 이용</p></div>
         <div><span>지하철</span><p>2호선 국제금융센터역 3번 출구 (도보 2분)<br />1호선 범내골역 4번 출구 (도보 10분)</p></div>

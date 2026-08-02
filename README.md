@@ -16,6 +16,16 @@ npm run dev
 npm run build
 ```
 
+## Kakao Maps 설정
+
+카카오 디벨로퍼스 애플리케이션의 플랫폼 키에서 **JavaScript 키**를 선택하고,
+JavaScript SDK 도메인에 `https://kicheolpark.github.io`를 등록합니다. 발급된 키를
+루트의 `.env.local`에 저장합니다.
+
+```bash
+VITE_KAKAO_MAP_JAVASCRIPT_KEY=your_kakao_map_javascript_key
+```
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape
