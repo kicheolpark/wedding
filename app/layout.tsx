@@ -14,29 +14,29 @@ export async function generateMetadata(): Promise<Metadata> {
   const origin = `${protocol}://${host}`;
 
   return {
-    title: "박기철 · 정송이, 결혼합니다",
+    title: "박기철 & 정송이 결혼식에 초대합니다",
     description:
       "2026년 9월 20일, 박기철과 정송이의 소중한 시작에 초대합니다.",
     metadataBase: new URL(origin),
     openGraph: {
-      title: "박기철 · 정송이, 결혼합니다",
+      title: "박기철 & 정송이 결혼식에 초대합니다",
       description: "2026년 9월 20일 일요일 낮 12시",
       type: "website",
       locale: "ko_KR",
       images: [
         {
-          url: `${origin}/og.png`,
-          width: 1728,
-          height: 910,
+          url: `${origin}/og.jpg`,
+          width: 1200,
+          height: 630,
           alt: "박기철 · 정송이 결혼식 초대장",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "박기철 · 정송이, 결혼합니다",
+      title: "박기철 & 정송이 결혼식에 초대합니다",
       description: "2026년 9월 20일 일요일 낮 12시",
-      images: [`${origin}/og.png`],
+      images: [`${origin}/og.jpg`],
     },
   };
 }

@@ -14,9 +14,10 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   ]);
 
   assert.match(page, /WeddingInvitation/);
-  assert.match(layout, /박기철 · 정송이, 결혼합니다/);
+  assert.match(layout, /박기철 & 정송이 결혼식에 초대합니다/);
   assert.match(layout, /lang="ko"/);
-  assert.match(layout, /og\.png/);
+  assert.match(layout, /og\.jpg/);
+  assert.match(invitation, /박기철 & 정송이 결혼식에 초대합니다/);
   assert.match(invitation, /만남에 사랑이 스며들어/);
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
   assert.match(invitation, /2026년 9월 20일 일요일 낮 12시/);
@@ -56,12 +57,13 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
     readdir(new URL("docs/gallery/", root)),
     access(new URL("docs/.nojekyll", root)),
     access(new URL("docs/hero.jpg", root)),
+    access(new URL("docs/og.jpg", root)),
   ]);
 
   assert.match(html, /<html[^>]*lang="ko"/i);
-  assert.match(html, /박기철 · 정송이, 결혼합니다/);
+  assert.match(html, /박기철 &amp; 정송이 결혼식에 초대합니다/);
   assert.match(html, /\/wedding\/assets\//);
-  assert.match(html, /\/wedding\/og\.png/);
+  assert.match(html, /\/wedding\/og\.jpg/);
   assert.match(html, /\/wedding\/hero\.jpg/);
   assert.ok(files.some((file) => file.endsWith(".js")));
   assert.ok(files.some((file) => file.endsWith(".css")));

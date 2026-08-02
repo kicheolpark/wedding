@@ -416,7 +416,7 @@ function Footer() {
 
   const kakaoShare = async () => {
     const shareData = {
-      title: "박기철 ♥ 정송이 결혼식에 초대합니다",
+      title: "박기철 & 정송이 결혼식에 초대합니다",
       text: "2026년 9월 20일 낮 12시, 부산 아바니 호텔 5층 아바니홀",
       url: window.location.href,
     };
