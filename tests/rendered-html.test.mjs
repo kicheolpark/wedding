@@ -65,5 +65,5 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
   assert.match(html, /\/wedding\/hero\.jpg/);
   assert.ok(files.some((file) => file.endsWith(".js")));
   assert.ok(files.some((file) => file.endsWith(".css")));
-  assert.equal(galleryFiles.filter((file) => /\.jpe?g$/i.test(file)).length, 16);
+  assert.equal(galleryFiles.filter((file) => /\.jpe?g$/i.test(file)).length, 9);
 });

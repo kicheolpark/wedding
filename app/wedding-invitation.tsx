@@ -19,16 +19,9 @@ const galleryFileNames = [
   "4.jpg",
   "5.jpg",
   "6.jpg",
+  "7.jpg",
   "8.jpg",
   "9.jpg",
-  "10.jpg",
-  "13.jpg",
-  "14.jpg",
-  "15.jpg",
-  "16.jpg",
-  "17.JPG",
-  "18.JPG",
-  "19.JPG",
 ];
 
 const galleryImages = galleryFileNames.map((filename, index) => ({
