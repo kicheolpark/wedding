@@ -24,6 +24,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /경남은행/);
   assert.match(invitation, /0000-1212/);
   assert.match(invitation, /0000-0329/);
+  assert.match(invitation, /thumbnails\.scrollTo/);
+  assert.doesNotMatch(invitation, /scrollIntoView/);
   assert.doesNotMatch(invitation, /✦|MusicPlayer|bgm\.mp3|music-button|music-notice/);
   assert.doesNotMatch(invitation, /RSVP|참석 의사|방명록|guestbook|\/api\//i);
   assert.match(css, /width:\s*min\(100%,\s*480px\)/);

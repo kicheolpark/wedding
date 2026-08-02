@@ -199,13 +199,17 @@ function WeddingVideo() {
 function Gallery() {
   const [selected, setSelected] = useState(0);
   const startX = useRef<number | null>(null);
+  const thumbnailsRef = useRef<HTMLDivElement | null>(null);
   const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
-    thumbnailRefs.current[selected]?.scrollIntoView({
+    const thumbnails = thumbnailsRef.current;
+    const thumbnail = thumbnailRefs.current[selected];
+    if (!thumbnails || !thumbnail) return;
+
+    thumbnails.scrollTo({
+      left: thumbnail.offsetLeft - (thumbnails.clientWidth - thumbnail.clientWidth) / 2,
       behavior: "smooth",
-      block: "nearest",
-      inline: "center",
     });
   }, [selected]);
 
@@ -240,7 +244,7 @@ function Gallery() {
       </div>
       <div className="gallery-rail">
         <button type="button" onClick={() => move(-1)} aria-label="이전 이미지">〈</button>
-        <div className="gallery-thumbnails">
+        <div className="gallery-thumbnails" ref={thumbnailsRef}>
           {galleryImages.map((image, index) => (
             <button
               key={image.alt}
