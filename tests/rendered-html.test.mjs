@@ -28,8 +28,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /className="hero-venue"/);
   assert.match(invitation, /<span>부산 아바니 호텔<\/span>/);
   assert.match(invitation, /<span>5층 아바니홀<\/span>/);
-  assert.match(invitation, /reczF8eMLtQ/);
-  assert.doesNotMatch(invitation, /2LTmgyRS47E|_9KvnBxxWls/);
+  assert.match(invitation, /bXye66yjiNk/);
+  assert.doesNotMatch(invitation, /reczF8eMLtQ|2LTmgyRS47E|_9KvnBxxWls/);
   assert.match(invitation, /className="section-heading video-heading"/);
   assert.match(invitation, /<h2>WEDDING FILM<\/h2>/);
   assert.match(invitation, /<p className="eyebrow">OUR STORY<\/p>/);
