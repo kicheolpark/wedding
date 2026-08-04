@@ -28,8 +28,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /className="hero-venue"/);
   assert.match(invitation, /<span>부산 아바니 호텔<\/span>/);
   assert.match(invitation, /<span>5층 아바니홀<\/span>/);
-  assert.match(invitation, /bXye66yjiNk/);
-  assert.doesNotMatch(invitation, /reczF8eMLtQ|2LTmgyRS47E|_9KvnBxxWls/);
+  assert.match(invitation, /reczF8eMLtQ/);
+  assert.doesNotMatch(invitation, /bXye66yjiNk|2LTmgyRS47E|_9KvnBxxWls/);
   assert.match(invitation, /className="section-heading video-heading"/);
   assert.match(invitation, /<h2>WEDDING FILM<\/h2>/);
   assert.match(invitation, /<p className="eyebrow">OUR STORY<\/p>/);
@@ -51,6 +51,14 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /https:\/\/naver\.me\/GRDxjnLj/);
   assert.match(invitation, /https:\/\/kko\.to\/5B-1ybgWQa/);
   assert.match(invitation, /https:\/\/tmap\.life\/2df2cfe9/);
+  assert.match(invitation, /2호선 국제금융센터·부산은행역 3번 출구/);
+  assert.match(invitation, /신랑아버지/);
+  assert.match(invitation, /729-21-0004795/);
+  assert.match(invitation, /신부어머니/);
+  assert.match(invitation, /17822051023818/);
+  assert.match(invitation, /네이버지도\.png/);
+  assert.match(invitation, /카카오맵\.png/);
+  assert.match(invitation, /티맵\.png/);
   assert.doesNotMatch(invitation, /loadNaverMaps|oapi\.map\.naver\.com|VITE_NAVER_MAP_NCP_KEY_ID/);
   assert.doesNotMatch(invitation, /오후 12시/);
   assert.doesNotMatch(invitation, /September|function Information|<SectionTitle title="INFORMATION"/);
@@ -84,8 +92,12 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.hero-copy h1 em[^}]*font-size:\s*22px/);
   assert.match(css, /\.hero-copy p[^}]*font-size:\s*11px/);
   assert.match(css, /\.hero-copy p[^}]*letter-spacing:\s*\.17em/);
-  assert.match(css, /\.hero-copy \.hero-date[^}]*font-size:\s*14px/);
+  assert.match(css, /\.hero-copy \.hero-date[^}]*font-size:\s*15px/);
   assert.match(css, /\.hero-copy \.hero-venue[^}]*flex-direction:\s*column/);
+  assert.match(css, /\.scroll-indicator[^}]*bottom:\s*10px/);
+  assert.match(css, /\.invitation-copy[^}]*font-size:\s*17px/);
+  assert.match(css, /\.family-lines p[^}]*font-size:\s*16px/);
+  assert.match(css, /\.family-lines strong[^}]*font-size:\s*17px/);
   assert.match(css, /#9d6f66/i);
   assert.match(css, /\.account-intro[^}]*font-size:\s*15px/);
   assert.match(css, /\.calendar-grid \.wedding-date-cell[^}]*background:\s*var\(--accent\)/);
@@ -105,6 +117,10 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.calendar-grid span small[^}]*top:\s*27px/);
   assert.match(css, /\.calendar-grid span small[^}]*font-size:\s*8px/);
   assert.match(css, /\.accounts[^}]*background:\s*#f7f4ee/);
+  assert.match(css, /\.location \.hall[^}]*font-size:\s*15px/);
+  assert.match(css, /\.transport-list > div[^}]*align-items:\s*center/);
+  assert.match(css, /\.transport-list p[^}]*font-size:\s*14px/);
+  assert.match(css, /\.map-links img[^}]*width:\s*22px/);
   assert.doesNotMatch(css, /\.naver-map-/);
   assert.match(envExample, /VITE_KAKAO_MAP_JAVASCRIPT_KEY=your_kakao_map_javascript_key/);
   assert.match(productionEnv, /^VITE_KAKAO_MAP_JAVASCRIPT_KEY=.+$/m);
@@ -126,6 +142,9 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
     access(new URL("docs/.nojekyll", root)),
     access(new URL("docs/hero.jpg", root)),
     access(new URL("docs/og.jpg", root)),
+    access(new URL("docs/네이버지도.png", root)),
+    access(new URL("docs/카카오맵.png", root)),
+    access(new URL("docs/티맵.png", root)),
   ]);
 
   assert.match(html, /<html[^>]*lang="ko"/i);

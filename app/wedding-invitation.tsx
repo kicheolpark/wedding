@@ -116,9 +116,11 @@ const galleryImages = galleryFileNames.map((filename, index) => ({
 const accounts = {
   groom: [
     { role: "신랑", name: "박기철", bank: "경남은행", number: "0000-1212" },
+    { role: "신랑아버지", name: "박종섭", bank: "경남은행", number: "729-21-0004795" },
   ],
   bride: [
     { role: "신부", name: "정송이", bank: "경남은행", number: "0000-0329" },
+    { role: "신부어머니", name: "김미양", bank: "농협은행", number: "17822051023818" },
   ],
 };
 
@@ -261,7 +263,7 @@ function WeddingVideo() {
       <div className="video-frame">
         {playing ? (
           <iframe
-            src="https://www.youtube-nocookie.com/embed/bXye66yjiNk?autoplay=1&playsinline=1&rel=0"
+            src="https://www.youtube-nocookie.com/embed/reczF8eMLtQ?autoplay=1&playsinline=1&rel=0"
             title="박기철 정송이 웨딩 영상"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -269,7 +271,7 @@ function WeddingVideo() {
         ) : (
           <button type="button" className="video-cover" onClick={() => setPlaying(true)} aria-label="웨딩 영상 재생">
             <img
-              src="https://img.youtube.com/vi/bXye66yjiNk/maxresdefault.jpg"
+              src="https://img.youtube.com/vi/reczF8eMLtQ/maxresdefault.jpg"
               alt="웨딩 영상 미리보기"
               className="protected-image"
               draggable={false}
@@ -476,13 +478,13 @@ function Location() {
       <KakaoMap />
       <div className="transport-list">
         <div><span>주차</span><p>호텔 주차장 입구 왼쪽 진입 B2~B4 이용</p></div>
-        <div><span>지하철</span><p>2호선 국제금융센터역 3번 출구 (도보 2분)<br />1호선 범내골역 4번 출구 (도보 10분)</p></div>
+        <div><span>지하철</span><p>2호선 국제금융센터·부산은행역 3번 출구 (도보 2분)<br />1호선 범내골역 4번 출구 (도보 10분)</p></div>
         <div><span>버스</span><p>24, 138-1, 583 문전교차로 하차</p></div>
       </div>
       <div className="map-links">
-        <a href={NAVER_MAP_URL} target="_blank" rel="noreferrer"><b>N</b>네이버 지도</a>
-        <a href={KAKAO_MAP_URL} target="_blank" rel="noreferrer"><b>K</b>카카오맵</a>
-        <a href={TMAP_URL} target="_blank" rel="noreferrer"><b>T</b>티맵</a>
+        <a href={NAVER_MAP_URL} target="_blank" rel="noreferrer"><img src={assetPath("네이버지도.png")} alt="" aria-hidden="true" draggable={false} />네이버 지도</a>
+        <a href={KAKAO_MAP_URL} target="_blank" rel="noreferrer"><img src={assetPath("카카오맵.png")} alt="" aria-hidden="true" draggable={false} />카카오맵</a>
+        <a href={TMAP_URL} target="_blank" rel="noreferrer"><img src={assetPath("티맵.png")} alt="" aria-hidden="true" draggable={false} />티맵</a>
       </div>
       <div className="meal-information">
         <span aria-hidden="true">🍽</span>
