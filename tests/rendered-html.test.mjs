@@ -24,7 +24,10 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /만남에 사랑이 스며들어/);
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
   assert.match(invitation, /2026년 9월 20일 일요일 낮 12시/);
-  assert.match(invitation, /부산 아바니 호텔, 5층 아바니홀/);
+  assert.match(invitation, /className="hero-date">2026년 9월 20일 일요일 낮 12시/);
+  assert.match(invitation, /className="hero-venue"/);
+  assert.match(invitation, /<span>부산 아바니 호텔<\/span>/);
+  assert.match(invitation, /<span>5층 아바니홀<\/span>/);
   assert.match(invitation, /reczF8eMLtQ/);
   assert.doesNotMatch(invitation, /2LTmgyRS47E|_9KvnBxxWls/);
   assert.match(invitation, /className="section-heading video-heading"/);
@@ -75,6 +78,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /preventKeyboardZoom/);
   assert.doesNotMatch(invitation, /<iframe src=\{KAKAO_MAP_URL\}/);
   assert.match(css, /width:\s*min\(100%,\s*480px\)/);
+  assert.match(css, /\.hero-copy \.hero-date[^}]*font-size:\s*15px/);
+  assert.match(css, /\.hero-copy \.hero-venue[^}]*gap:\s*2px/);
   assert.match(css, /#9d6f66/i);
   assert.match(css, /\.account-intro[^}]*font-size:\s*15px/);
   assert.match(css, /\.calendar-grid \.wedding-date-cell[^}]*background:\s*var\(--accent\)/);

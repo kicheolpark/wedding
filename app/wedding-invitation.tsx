@@ -212,8 +212,11 @@ function Hero() {
       <div className="hero-copy">
         <p className="hero-kicker">WE ARE GETTING MARRIED</p>
         <h1><span>박기철</span><em>&amp;</em><span>정송이</span></h1>
-        <p>2026년 9월 20일 일요일 낮 12시</p>
-        <p>부산 아바니 호텔, 5층 아바니홀</p>
+        <p className="hero-date">2026년 9월 20일 일요일 낮 12시</p>
+        <p className="hero-venue">
+          <span>부산 아바니 호텔</span>
+          <span>5층 아바니홀</span>
+        </p>
       </div>
       <a className="scroll-indicator" href="#invitation" aria-label="초대글로 스크롤">
         <span>SCROLL</span>
