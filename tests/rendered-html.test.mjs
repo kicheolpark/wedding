@@ -78,13 +78,13 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(invitation, /preventKeyboardZoom/);
   assert.doesNotMatch(invitation, /<iframe src=\{KAKAO_MAP_URL\}/);
   assert.match(css, /width:\s*min\(100%,\s*480px\)/);
-  assert.match(css, /\.hero-copy[^}]*bottom:\s*105px/);
+  assert.match(css, /\.hero-copy[^}]*bottom:\s*85px/);
   assert.match(css, /\.hero-kicker[^}]*margin:\s*0 0 2px\s*!important/);
   assert.match(css, /\.hero-copy h1[^}]*font-size:\s*30px/);
   assert.match(css, /\.hero-copy h1 em[^}]*font-size:\s*22px/);
   assert.match(css, /\.hero-copy p[^}]*font-size:\s*11px/);
   assert.match(css, /\.hero-copy p[^}]*letter-spacing:\s*\.17em/);
-  assert.match(css, /\.hero-copy \.hero-date[^}]*font-size:\s*13px/);
+  assert.match(css, /\.hero-copy \.hero-date[^}]*font-size:\s*14px/);
   assert.match(css, /\.hero-copy \.hero-venue[^}]*flex-direction:\s*column/);
   assert.match(css, /#9d6f66/i);
   assert.match(css, /\.account-intro[^}]*font-size:\s*15px/);
