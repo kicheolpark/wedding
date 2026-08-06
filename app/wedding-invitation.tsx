@@ -106,6 +106,9 @@ const galleryFileNames = [
   "7.jpg",
   "8.jpg",
   "9.jpg",
+  "10.jpg",
+  "11.jpg",
+  "12.jpg",
 ];
 
 const galleryImages = galleryFileNames.map((filename, index) => ({
@@ -116,7 +119,8 @@ const galleryImages = galleryFileNames.map((filename, index) => ({
 const accounts = {
   groom: [
     { role: "신랑", name: "박기철", bank: "경남은행", number: "0000-1212" },
-    { role: "신랑아버지", name: "박종섭", bank: "경남은행", number: "729-21-0004795" },
+    { role: "신랑아버지", name: "박종섭", bank: "경남은행", number: "729210004795" },
+    { role: "신랑어머니", name: "전지현", bank: "경남은행", number: "2210020275206" },
   ],
   bride: [
     { role: "신부", name: "정송이", bank: "경남은행", number: "0000-0329" },
@@ -398,10 +402,10 @@ function WeddingDay() {
       </p>
       <div className="countdown" aria-label="결혼식까지 남은 시간">
         {[
-          [countdown?.days, "DAYS"],
-          [countdown?.hours, "HOURS"],
-          [countdown?.minutes, "MIN"],
-          [countdown?.seconds, "SEC"],
+          [countdown?.days, "일"],
+          [countdown?.hours, "시"],
+          [countdown?.minutes, "분"],
+          [countdown?.seconds, "초"],
         ].map(([value, label]) => (
           <div key={String(label)}>
             <strong>{String(value ?? 0).padStart(2, "0")}</strong>
@@ -478,7 +482,7 @@ function Location() {
       <KakaoMap />
       <div className="transport-list">
         <div><span>주차</span><p>호텔 주차장 입구 왼쪽 진입 B2~B4 이용</p></div>
-        <div><span>지하철</span><p>2호선 국제금융센터·부산은행역 3번 출구 (도보 2분)<br />1호선 범내골역 4번 출구 (도보 10분)</p></div>
+        <div><span>지하철</span><p>2호선 국제금융센터·부산은행역 3번 출구<br />1호선 범내골역 4번 출구</p></div>
         <div><span>버스</span><p>24, 138-1, 583 문전교차로 하차</p></div>
       </div>
       <div className="map-links">
