@@ -146,12 +146,16 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.gallery-thumbnails button[^}]*width:\s*70px/);
   assert.match(css, /\.gallery-thumbnails button[^}]*aspect-ratio:\s*1/);
   assert.match(css, /\.gallery-thumbnails img[^}]*object-position:\s*50% 50%/);
-  assert.match(css, /\.meal-information[^}]*align-items:\s*center/);
+  assert.match(css, /\.meal-information[^}]*align-items:\s*start/);
+  assert.match(css, /\.meal-information > span[^}]*height:\s*21px/);
+  assert.match(css, /\.meal-information > span[^}]*align-self:\s*start/);
+  assert.match(css, /\.meal-information h3[^}]*line-height:\s*21px/);
   assert.match(css, /\.accounts[^}]*background:\s*#f7f4ee/);
   assert.match(css, /\.location \.hall[^}]*font-size:\s*15px/);
   assert.match(css, /\.transport-list > div[^}]*align-items:\s*start/);
   assert.match(css, /\.transport-list > div[^}]*grid-template-columns:\s*1fr/);
   assert.match(css, /\.transport-list > div[^}]*gap:\s*8px/);
+  assert.match(css, /\.transport-list > div[^}]*padding:\s*16px 3px/);
   assert.match(css, /\.transport-list p[^}]*font-size:\s*14px/);
   assert.match(css, /\.map-links img[^}]*width:\s*22px/);
   assert.doesNotMatch(css, /\.naver-map-/);
