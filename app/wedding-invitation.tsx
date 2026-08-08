@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const WEDDING_DATE = new Date("2026-09-20T12:00:00+09:00");
 const ASSET_BASE = import.meta.env.BASE_URL ?? "/";
 const KAKAO_MAP_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_MAP_JAVASCRIPT_KEY?.trim() ?? "";
-const VENUE_COORDINATES = { latitude: 35.14875, longitude: 129.065277 };
+const VENUE_COORDINATES = { latitude: 35.14827586341376, longitude: 129.0654417686709 };
 const NAVER_MAP_URL = "https://naver.me/GRDxjnLj";
 const KAKAO_MAP_URL = "https://kko.to/5B-1ybgWQa";
 const TMAP_URL = "https://tmap.life/2df2cfe9";
@@ -437,7 +437,7 @@ function KakaoMap() {
         const center = new maps.LatLng(VENUE_COORDINATES.latitude, VENUE_COORDINATES.longitude);
         const map = new maps.Map(mapRef.current, {
           center,
-          level: 3,
+          level: 5,
         });
         map.addControl(new maps.ZoomControl(), maps.ControlPosition.RIGHT);
         marker = new maps.Marker({ position: center, map, title: "아바니 센트럴 부산" });
@@ -482,7 +482,7 @@ function Location() {
       <KakaoMap />
       <div className="transport-list">
         <div><span>주차</span><p>호텔 주차장 입구 왼쪽 진입 B2~B4 이용</p></div>
-        <div><span>지하철</span><p>2호선 국제금융센터·부산은행역 3번 출구<br />1호선 범내골역 4번 출구</p></div>
+        <div><span>지하철</span><p>2호선 국제금융센터·부산은행역 3번 출구(도보 2분)<br />1호선 범내골역 4번 출구(도보 10분)</p></div>
         <div><span>버스</span><p>24, 138-1, 583 문전교차로 하차</p></div>
       </div>
       <div className="map-links">

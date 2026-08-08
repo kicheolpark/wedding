@@ -8,6 +8,7 @@
   --line: #e8e3da;
   --accent: #9d6f66;
   --accent-soft: #eadbd6;
+  --calendar-red: #b33a3a;
   --serif: "Iropke Batang", "Nanum Myeongjo", "AppleMyungjo", "Batang", Georgia, serif;
   --sans: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
 }
@@ -105,7 +106,7 @@ a { color: inherit; text-decoration: none; }
 .hero-copy h1 em { color: rgba(255,255,255,.8); font-family: Georgia, serif; font-size: 22px; font-weight: 400; }
 .hero-copy p { margin: 7px 0; font-size: 11px; letter-spacing: .17em; }
 .hero-copy .hero-date, .hero-copy .hero-venue { font-size: 15px; }
-.hero-copy .hero-venue { display: flex; flex-direction: column; line-height: 1.05; }
+.hero-copy .hero-venue { display: flex; flex-direction: column; line-height: 1.05; transform: translateY(6px); }
 .scroll-indicator { position: absolute; bottom: 10px; left: 50%; display: flex; flex-direction: column; align-items: center; gap: 7px; transform: translateX(-50%); color: white; }
 .scroll-indicator span { font-size: 8px; letter-spacing: .22em; opacity: .82; }
 .scroll-indicator i { width: 1px; height: 31px; background: rgba(255,255,255,.8); animation: bounce 1.6s ease-in-out infinite; }
@@ -150,16 +151,16 @@ a { color: inherit; text-decoration: none; }
 .wedding-date { margin: -25px 0 38px; color: #77756f; font-family: var(--serif); font-size: 14px; }
 .calendar { max-width: 340px; margin: 0 auto; padding: 26px 17px 25px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .calendar-top { display: flex; align-items: center; justify-content: center; margin-bottom: 23px; font-family: Georgia, serif; }
-.calendar-top strong { color: #bbb5ab; font-size: 36px; font-weight: 400; }
+.calendar-top strong { color: #aaa49a; font-size: 38px; font-weight: 400; }
 .weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
-.weekdays { margin-bottom: 13px; color: #a19e97; font-family: var(--serif); font-size: 11px; }
-.weekdays span:first-child { color: var(--accent); }
+.weekdays { margin-bottom: 13px; color: #8f8c85; font-family: var(--serif); font-size: 13px; }
+.weekdays span:first-child { color: var(--calendar-red); font-weight: 600; }
 .calendar-grid { row-gap: 9px; }
-.calendar-grid span { position: relative; display: grid; height: 38px; place-items: center; color: #605e59; font-family: Georgia, serif; font-size: 14px; }
-.calendar-grid span:nth-child(7n + 1) { color: var(--accent); }
-.calendar-grid .holiday { color: var(--accent); }
-.calendar-grid .wedding-date-cell { width: 32px; height: 32px; margin: 3px auto; border-radius: 50%; background: var(--accent); color: #fff !important; font-weight: 600; box-shadow: 0 5px 12px rgba(157,111,102,.25); }
-.calendar-grid span small { position: absolute; top: 31px; color: var(--accent); font-family: var(--sans); font-size: 9px; line-height: 1; white-space: nowrap; }
+.calendar-grid span { position: relative; display: grid; height: 42px; place-items: center; color: #56544f; font-family: Georgia, serif; font-size: 16px; }
+.calendar-grid span:nth-child(7n + 1) { color: var(--calendar-red); font-weight: 600; }
+.calendar-grid .holiday { color: var(--calendar-red); font-weight: 600; }
+.calendar-grid .wedding-date-cell { width: 35px; height: 35px; margin: 3px auto; border-radius: 50%; background: var(--accent); color: #fff !important; font-weight: 600; box-shadow: 0 5px 12px rgba(157,111,102,.25); }
+.calendar-grid span small { position: absolute; top: 34px; color: var(--calendar-red); font-family: var(--sans); font-size: 9px; line-height: 1; white-space: nowrap; }
 .d-day-copy { margin: 43px 0 27px; color: #74716b; font-family: var(--serif); font-size: 14px; line-height: 1.8; }
 .d-day-copy strong { color: var(--accent); font-size: 18px; font-weight: 500; }
 .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
@@ -181,10 +182,10 @@ a { color: inherit; text-decoration: none; }
 .kakao-map-info strong { color: #333; font-size: 13px; }
 .kakao-map-info span { margin-top: 4px; color: #777; font-size: 10px; }
 .transport-list { text-align: left; }
-.transport-list > div { display: grid; grid-template-columns: 58px 1fr; align-items: center; gap: 13px; padding: 20px 3px; border-bottom: 1px solid var(--line); }
+.transport-list > div { display: grid; grid-template-columns: 58px 1fr; align-items: start; gap: 13px; padding: 20px 3px; border-bottom: 1px solid var(--line); }
 .transport-list > div:first-child { border-top: 1px solid var(--line); }
 .transport-list span { color: var(--accent); font-family: var(--serif); font-size: 15px; font-weight: 600; }
-.transport-list p { margin: 0; color: #696863; font-size: 14px; line-height: 1.9; }
+.transport-list p { width: 100%; justify-self: start; margin: 0; color: #696863; font-size: 14px; line-height: 1.9; text-align: left; }
 .map-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 30px; }
 .map-links a { display: flex; min-height: 55px; align-items: center; justify-content: center; gap: 5px; border: 1px solid #ded9d0; background: #fff; color: #5b5a56; font-size: 10px; }
 .map-links img { width: 22px; height: 22px; object-fit: contain; }
