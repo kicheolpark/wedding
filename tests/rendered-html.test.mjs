@@ -135,9 +135,12 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.calendar-top strong[^}]*font-size:\s*38px/);
   assert.match(css, /\.weekdays[^}]*font-size:\s*13px/);
   assert.match(css, /\.weekdays span:first-child[^}]*var\(--calendar-red\)/);
+  assert.doesNotMatch(css, /\.weekdays span:first-child[^}]*font-weight/);
   assert.match(css, /\.calendar-grid span[^}]*font-size:\s*16px/);
   assert.match(css, /\.calendar-grid span:nth-child\(7n \+ 1\)[^}]*var\(--calendar-red\)/);
   assert.match(css, /\.calendar-grid \.holiday[^}]*var\(--calendar-red\)/);
+  assert.doesNotMatch(css, /\.calendar-grid span:nth-child\(7n \+ 1\)[^}]*font-weight/);
+  assert.doesNotMatch(css, /\.calendar-grid \.holiday[^}]*font-weight/);
   assert.match(css, /\.calendar-grid span small[^}]*top:\s*34px/);
   assert.match(css, /\.calendar-grid span small[^}]*font-size:\s*9px/);
   assert.match(css, /\.gallery-thumbnails button[^}]*width:\s*70px/);
@@ -147,6 +150,8 @@ test("contains the complete Korean mobile wedding invitation", async () => {
   assert.match(css, /\.accounts[^}]*background:\s*#f7f4ee/);
   assert.match(css, /\.location \.hall[^}]*font-size:\s*15px/);
   assert.match(css, /\.transport-list > div[^}]*align-items:\s*start/);
+  assert.match(css, /\.transport-list > div[^}]*grid-template-columns:\s*1fr/);
+  assert.match(css, /\.transport-list > div[^}]*gap:\s*8px/);
   assert.match(css, /\.transport-list p[^}]*font-size:\s*14px/);
   assert.match(css, /\.map-links img[^}]*width:\s*22px/);
   assert.doesNotMatch(css, /\.naver-map-/);
