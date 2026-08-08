@@ -5,7 +5,7 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 
 test("contains the complete Korean mobile wedding invitation", async () => {
-  const [page, layout, invitation, css, hosting, envExample, productionEnv, viteConfig] = await Promise.all([
+  const [page, layout, invitation, css, hosting, envExample, productionEnv, viteConfig, pagesIndex] = await Promise.all([
     readFile(new URL("app/page.tsx", root), "utf8"),
     readFile(new URL("app/layout.tsx", root), "utf8"),
     readFile(new URL("app/wedding-invitation.tsx", root), "utf8"),
@@ -14,12 +14,17 @@ test("contains the complete Korean mobile wedding invitation", async () => {
     readFile(new URL(".env.example", root), "utf8"),
     readFile(new URL(".env.production", root), "utf8"),
     readFile(new URL("vite.pages.config.ts", root), "utf8"),
+    readFile(new URL("github-pages/index.html", root), "utf8"),
   ]);
 
   assert.match(page, /WeddingInvitation/);
   assert.match(layout, /박기철 & 정송이 결혼식에 초대합니다/);
   assert.match(layout, /lang="ko"/);
   assert.match(layout, /og\.jpg/);
+  assert.match(layout, /googletagmanager\.com\/gtag\/js\?id=G-SC5TB1N4MZ/);
+  assert.match(layout, /gtag\('config', 'G-SC5TB1N4MZ'\)/);
+  assert.match(pagesIndex, /googletagmanager\.com\/gtag\/js\?id=G-SC5TB1N4MZ/);
+  assert.match(pagesIndex, /gtag\('config', 'G-SC5TB1N4MZ'\)/);
   assert.match(invitation, /박기철 & 정송이 결혼식에 초대합니다/);
   assert.match(invitation, /만남에 사랑이 스며들어/);
   assert.match(invitation, /2026-09-20T12:00:00\+09:00/);
@@ -167,6 +172,8 @@ test("builds a GitHub Pages site under the wedding project path", async () => {
   assert.match(html, /maximum-scale=1\.0/);
   assert.match(html, /user-scalable=no/);
   assert.match(html, /박기철 &amp; 정송이 결혼식에 초대합니다/);
+  assert.match(html, /googletagmanager\.com\/gtag\/js\?id=G-SC5TB1N4MZ/);
+  assert.match(html, /gtag\('config', 'G-SC5TB1N4MZ'\)/);
   assert.match(html, /\/wedding\/assets\//);
   assert.match(html, /\/wedding\/og\.jpg/);
   assert.match(html, /\/wedding\/hero\.jpg/);

@@ -64,6 +64,20 @@ export default function RootLayout({
           href="/hero.jpg"
           fetchPriority="high"
         />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-SC5TB1N4MZ"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-SC5TB1N4MZ');
+            `,
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>
